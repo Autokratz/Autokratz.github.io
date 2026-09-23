@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hector Cabra — Network & Infrastructure Engineering</title>
+<meta name="description" content="Network and infrastructure engineering portfolio. Measured QoS, LACP and site-to-site VPN lab work, a WebAssembly learning platform, and GPU pipeline orchestration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F6F5F3;
+  --surface:#FFFFFF;
+  --surface-2:#EDEBE7;
+  --ink:#16161A;
+  --ink-2:#4A4A52;
+  --ink-3:#77777F;
+  --line:#DCDAD5;
+  --line-2:#C2BFB8;
+  --accent:#1E44C8;
+  --accent-2:#1836A3;
+  --accent-soft:#E2E6FA;
+  --before:#B4643C;
+  --after:#1E44C8;
+  --ok:#15733F;
+  --shadow:0 1px 2px rgba(22,22,26,.05), 0 12px 32px -22px rgba(22,22,26,.4);
+  --d:'Sora','Helvetica Neue',Arial,sans-serif;
+  --b:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --m:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#0F0F12;
+    --surface:#17171C;
+    --surface-2:#1F1F26;
+    --ink:#EDECEA;
+    --ink-2:#ADACB4;
+    --ink-3:#7E7D86;
+    --line:#2A2A33;
+    --line-2:#3C3C47;
+    --accent:#7B96FF;
+    --accent-2:#9DB2FF;
+    --accent-soft:#181E3A;
+    --before:#E09468;
+    --after:#7B96FF;
+    --ok:#4ADE80;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -22px #000;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#0F0F12; --surface:#17171C; --surface-2:#1F1F26;
+  --ink:#EDECEA; --ink-2:#ADACB4; --ink-3:#7E7D86;
+  --line:#2A2A33; --line-2:#3C3C47;
+  --accent:#7B96FF; --accent-2:#9DB2FF; --accent-soft:#181E3A;
+  --before:#E09468; --after:#7B96FF; --ok:#4ADE80;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 32px -22px #000;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--b); font-size:17px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px; margin:0 auto; padding-inline:22px}
+a{color:var(--accent-2)}
+img{max-width:100%}
+
+/* hero */
+header.hero{border-bottom:1px solid var(--line); background:var(--surface)}
+header.hero .wrap{padding-block:clamp(48px,9vw,84px) clamp(34px,6vw,54px)}
+.kicker{
+  font-family:var(--m); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:500; margin:0 0 18px;
+}
+h1{
+  font-family:var(--d); font-weight:800; font-size:clamp(34px,7vw,62px);
+  line-height:1.02; letter-spacing:-.035em; margin:0 0 20px; text-wrap:balance;
+}
+.lede{font-size:clamp(18px,2.4vw,21px); color:var(--ink-2); max-width:56ch; margin:0 0 26px}
+.lede strong{color:var(--ink); font-weight:600}
+.meta{display:flex; gap:10px 22px; flex-wrap:wrap; font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
+.meta a{color:var(--ink-2); text-decoration:none; border-bottom:1px solid var(--line-2)}
+.meta a:hover{color:var(--accent); border-color:var(--accent)}
+
+/* sections */
+section{padding-block:clamp(44px,7vw,72px); border-bottom:1px solid var(--line)}
+.sec-label{
+  font-family:var(--m); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 10px;
+}
+h2{
+  font-family:var(--d); font-weight:700; font-size:clamp(25px,4.4vw,36px);
+  letter-spacing:-.025em; line-height:1.12; margin:0 0 14px; text-wrap:balance;
+}
+h3{font-family:var(--d); font-weight:600; font-size:17px; letter-spacing:-.01em; margin:0 0 8px}
+p{margin:0 0 15px; max-width:66ch}
+.muted{color:var(--ink-2)}
+
+/* case study */
+.case + .case{margin-top:clamp(44px,7vw,68px); padding-top:clamp(44px,7vw,68px); border-top:1px dashed var(--line-2)}
+.case-head{display:flex; gap:14px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+.case-head .n{
+  font-family:var(--m); font-size:12px; color:var(--accent); font-weight:700;
+}
+.case-sub{font-family:var(--m); font-size:12px; color:var(--ink-3); margin:0 0 20px}
+
+.qa{margin:20px 0}
+.qa dt{
+  font-family:var(--m); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); font-weight:500; margin-bottom:5px;
+}
+.qa dd{margin:0 0 17px; max-width:66ch}
+
+/* metrics */
+.metrics{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
+  gap:1px; background:var(--line); border:1px solid var(--line);
+  border-radius:12px; overflow:hidden; margin:24px 0;
+}
+.metric{background:var(--surface); padding:15px 16px}
+.metric .lab{
+  font-family:var(--m); font-size:10px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:9px;
+}
+.metric .pair{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+.metric .from{
+  font-family:var(--m); font-size:14px; color:var(--before); text-decoration:line-through;
+  text-decoration-thickness:1px; font-variant-numeric:tabular-nums;
+}
+.metric .arrow{color:var(--ink-3); font-size:12px}
+.metric .to{
+  font-family:var(--d); font-weight:700; font-size:22px; color:var(--ink);
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums;
+}
+.metric .delta{
+  font-family:var(--m); font-size:11px; color:var(--ok); font-weight:500; margin-top:5px;
+}
+
+/* chart */
+figure{margin:26px 0; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 18px 14px; box-shadow:var(--shadow)}
+figure .chart-t{font-family:var(--d); font-weight:600; font-size:14.5px; margin:0 0 3px}
+figure .chart-s{font-family:var(--m); font-size:11.5px; color:var(--ink-3); margin:0 0 14px}
+figure svg{display:block; width:100%; height:auto; overflow:visible}
+figcaption{
+  font-family:var(--m); font-size:11.5px; color:var(--ink-3);
+  margin-top:12px; padding-top:11px; border-top:1px solid var(--line); line-height:1.5;
+}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-family:var(--m); font-size:11.5px; margin-bottom:12px}
+.legend span{display:flex; align-items:center; gap:6px; color:var(--ink-2)}
+.legend i{width:16px; height:3px; border-radius:2px; display:block}
+
+/* lists */
+ul.bullets{margin:0 0 15px; padding-left:20px; max-width:66ch}
+ul.bullets li{margin-bottom:9px}
+
+.stack{
+  display:flex; gap:7px; flex-wrap:wrap; margin:18px 0 0;
+}
+.stack span{
+  font-family:var(--m); font-size:11.5px; color:var(--ink-2);
+  background:var(--surface-2); border:1px solid var(--line);
+  border-radius:5px; padding:4px 9px;
+}
+.links{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px}
+.links a{
+  font-family:var(--d); font-weight:600; font-size:14px; text-decoration:none;
+  padding:9px 16px; border-radius:8px; border:1px solid var(--line-2); color:var(--ink);
+}
+.links a.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+.links a:hover{border-color:var(--accent); color:var(--accent)}
+.links a.primary:hover{color:#fff; filter:brightness(1.1)}
+
+/* skills + edu */
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:26px}
+.skillgroup h3{
+  font-family:var(--m); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); font-weight:500; margin-bottom:9px;
+}
+.skillgroup p{font-size:15.5px; color:var(--ink-2); margin:0}
+
+.edu{border-left:2px solid var(--line-2); padding-left:18px; margin-bottom:22px}
+.edu .t{font-family:var(--d); font-weight:600; font-size:16.5px; margin-bottom:2px}
+.edu .i{font-size:15px; color:var(--ink-2)}
+.edu .d{font-family:var(--m); font-size:11.5px; color:var(--ink-3); margin-top:3px}
+.edu.now{border-left-color:var(--accent)}
+
+footer{padding-block:44px 60px}
+footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Sydney, Australia · Available now</p>
+    <h1>Hector Cabra</h1>
+    <p class="lede">Network &amp; infrastructure engineering. I build networks I can <strong>measure</strong>, and I publish the measurements — every number on this page came out of a lab I ran myself.</p>
+    <div class="meta">
+      <a href="https://github.com/Autokratz">github.com/Autokratz</a>
+      
+      <a href="mailto:hectorcabra95@gmail.com">hectorcabra95@gmail.com</a>
+      <span>Adv. Dip. Networking Engineering · BSc Software Engineering</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+
+    <!-- CASE 1 -->
+    <article class="case">
+      <p class="sec-label">Case study 01</p>
+      <div class="case-head"><h2>Protecting voice inside a saturated uplink</h2></div>
+      <p class="case-sub">Campus LAN · QoS classification + 802.3ad link aggregation · Linux network namespaces</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>A head-office campus LAN carried VoIP and bulk data over the same 10 Mbps access-layer uplink. Whenever a bulk transfer ran, the uplink filled and voice quality collapsed — round-trip time rose to an average of 152 ms with swings up to 165 ms, and calls started dropping packets. The access switch was holding traffic in a single deep tail-drop queue, so voice waited behind bulk data in the same buffer.</dd>
+
+        <dt>Approach</dt>
+        <dd>I built the topology for real rather than simulating it — two access hosts (a VoIP phone and a data workstation), an access switch and a core switch, each in its own Linux network namespace with real routing and real queueing. I reproduced the fault first, measured it, then rebuilt the egress path: HTB class-based shaping replacing the tail-drop queue, <code>u32</code> filters matching DSCP EF to steer RTP voice into a priority class, and the two switch uplinks bonded with 802.3ad LACP.</dd>
+
+        <dt>Result</dt>
+        <dd>Voice RTT dropped to a flat 20 ms and jitter fell to effectively zero, with voice packet loss eliminated entirely. The important part is what <em>didn't</em> change: the uplink still runs at about 99% utilisation. Bulk traffic was never throttled — average throughput actually rose slightly. The link is just as full; voice simply no longer waits in the same queue.</dd>
+      </dl>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="lab">Voice RTT (avg)</div>
+          <div class="pair"><span class="from">152.5 ms</span><span class="arrow">→</span><span class="to">20.0 ms</span></div>
+          <div class="delta">−87%</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Jitter</div>
+          <div class="pair"><span class="from">1.289 ms</span><span class="arrow">→</span><span class="to">0.002 ms</span></div>
+          <div class="delta">−99.8%</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Voice packet loss</div>
+          <div class="pair"><span class="from">0.072%</span><span class="arrow">→</span><span class="to">0%</span></div>
+          <div class="delta">21 of 29,071 → 0</div>
+        </div>
+        <div class="metric">
+          <div class="lab">RTT deviation</div>
+          <div class="pair"><span class="from">9.248 ms</span><span class="arrow">→</span><span class="to">0.005 ms</span></div>
+          <div class="delta">stable under load</div>
+        </div>
+      </div>
+
+      <figure>
+        <p class="chart-t">Uplink utilisation — before and after QoS</p>
+        <p class="chart-s">10 Mbps access uplink, sampled per second</p>
+        <div class="legend">
+          <span><i style="background:var(--before)"></i>Before — tail-drop queue</span>
+          <span><i style="background:var(--after)"></i>After — HTB + DSCP EF</span>
+        </div>
+        <div id="chart1"></div>
+        <figcaption>Both traces sit at roughly 99%. The fix did not reduce load — it changed who waits. Bulk data still saturates the link while voice is classified into a priority class and passes without queueing delay.</figcaption>
+      </figure>
+
+      <div class="stack">
+        <span>tc / HTB</span><span>tc / TBF</span><span>u32 filters</span><span>DSCP EF</span>
+        <span>802.3ad LACP</span><span>Linux netns</span><span>iperf3</span><span>Python</span>
+      </div>
+      <div class="links">
+        <a class="primary" href="https://github.com/Autokratz/network-qos-lab">Read the lab →</a>
+      </div>
+    </article>
+
+    <!-- CASE 2 -->
+    <article class="case">
+      <p class="sec-label">Case study 02</p>
+      <div class="case-head"><h2>Recovering a WAN link at 100% saturation</h2></div>
+      <p class="case-sub">Remote branch · WireGuard site-to-site VPN + time-based bandwidth policy</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>A remote branch reached head office through a site-to-site VPN over a 20 Mbps WAN link. An unscheduled NAS backup ran during business hours and pushed the tunnel to 100.1% of link capacity. Interactive traffic became unusable: round-trip time averaged 713 ms with peaks past 1.2 seconds, and 3.33% of packets never arrived at all.</dd>
+
+        <dt>Approach</dt>
+        <dd>I built the branch topology — NAS, workstation, branch router, WAN segment, HQ router and cloud server — again in network namespaces, with a real WireGuard tunnel carrying the traffic and nftables enforcing policy at the branch edge. I confirmed the saturation against interface counters, then applied a time-based bandwidth policy that caps backup traffic to a small share of the link inside business hours and releases it outside them.</dd>
+
+        <dt>Result</dt>
+        <dd>Output utilisation fell from 100.1% to 5.2%, branch RTT from 713 ms to a stable 30 ms, and packet loss to zero. Backup throughput was deliberately shaped from 20.7 Mbps down to 1.31 Mbps during business hours — the backup still completes, it just no longer competes with the people trying to work.</dd>
+      </dl>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="lab">Branch RTT (avg)</div>
+          <div class="pair"><span class="from">713.0 ms</span><span class="arrow">→</span><span class="to">30.3 ms</span></div>
+          <div class="delta">−96%</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Worst-case RTT</div>
+          <div class="pair"><span class="from">1208 ms</span><span class="arrow">→</span><span class="to">30.8 ms</span></div>
+          <div class="delta">−97%</div>
+        </div>
+        <div class="metric">
+          <div class="lab">Packet loss</div>
+          <div class="pair"><span class="from">3.33%</span><span class="arrow">→</span><span class="to">0%</span></div>
+          <div class="delta">1 of 30 → 0 of 30</div>
+        </div>
+        <div class="metric">
+          <div class="lab">WAN output load</div>
+          <div class="pair"><span class="from">100.1%</span><span class="arrow">→</span><span class="to">5.2%</span></div>
+          <div class="delta">headroom restored</div>
+        </div>
+      </div>
+
+      <figure>
+        <p class="chart-t">WAN utilisation — saturation and recovery</p>
+        <p class="chart-s">20 Mbps WAN link carrying the site-to-site tunnel, sampled per second</p>
+        <div class="legend">
+          <span><i style="background:var(--before)"></i>Saturated — unscheduled backup</span>
+          <span><i style="background:var(--after)"></i>Recovered — time-based policy</span>
+        </div>
+        <div id="chart2"></div>
+        <figcaption>Unlike the campus LAN, here the goal <em>was</em> to remove load. The backup is legitimate traffic in the wrong window, so the policy moves it rather than blocking it.</figcaption>
+      </figure>
+
+      <div class="stack">
+        <span>WireGuard</span><span>nftables</span><span>tc / HTB</span><span>Time-based policy</span>
+        <span>Linux netns</span><span>iperf3</span><span>Bash</span>
+      </div>
+      <div class="links">
+        <a class="primary" href="https://github.com/Autokratz/network-qos-lab">Read the lab →</a>
+      </div>
+    </article>
+
+    <!-- CASE 3 -->
+    <article class="case">
+      <p class="sec-label">Case study 03</p>
+      <div class="case-head"><h2>NEURON — running real Python in the browser</h2></div>
+      <p class="case-sub">Learning platform · Pyodide / WebAssembly · no backend</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>Coding tutorials that check answers by matching strings teach people to produce the expected text, not working code. Anything that grades properly normally needs a server to execute submissions — which means hosting, cost and an account before a learner can write a single line.</dd>
+
+        <dt>Approach</dt>
+        <dd>I built the whole platform client-side. Python runs in the browser through Pyodide compiled to WebAssembly, and each quest carries a hidden <code>assert</code>-based test suite that runs against the learner's actual submission. Course content is declarative data, separate from the execution and grading engine, so adding material takes no code changes. Progress, XP and skill-tree unlocks persist in localStorage.</dd>
+
+        <dt>Result</dt>
+        <dd>52 graded quests across a skill-tree progression with boss challenges, in roughly 900 lines of vanilla JavaScript, HTML and CSS. No framework, no backend, no account, no hosting bill — it is a static page that grades real code.</dd>
+      </dl>
+
+      <div class="metrics">
+        <div class="metric"><div class="lab">Graded quests</div><div class="pair"><span class="to">52</span></div><div class="delta">real assert-based tests</div></div>
+        <div class="metric"><div class="lab">Codebase</div><div class="pair"><span class="to">~900</span></div><div class="delta">lines, vanilla JS</div></div>
+        <div class="metric"><div class="lab">Backend services</div><div class="pair"><span class="to">0</span></div><div class="delta">fully static</div></div>
+        <div class="metric"><div class="lab">Runtime</div><div class="pair"><span class="to">WASM</span></div><div class="delta">CPython via Pyodide</div></div>
+      </div>
+
+      <div class="stack">
+        <span>JavaScript</span><span>Pyodide</span><span>WebAssembly</span><span>Python</span>
+        <span>localStorage</span><span>HTML5</span><span>CSS3</span>
+      </div>
+      <div class="links">
+        <a class="primary" href="https://github.com/Autokratz/neuron">View the code →</a>
+      </div>
+    </article>
+
+    <!-- CASE 4 -->
+    <article class="case">
+      <p class="sec-label">Case study 04</p>
+      <div class="case-head"><h2>Keeping a single GPU from falling over</h2></div>
+      <p class="case-sub">Batch inference orchestration · automated quality gating · 12 GB VRAM ceiling</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>A multi-stage inference pipeline — detection, enhancement, upscaling — had to run on one consumer GPU with 12 GB of VRAM. Two jobs overlapping meant an out-of-memory failure that took the whole machine down, and bad output from an early stage wasted GPU time on every stage after it.</dd>
+
+        <dt>Approach</dt>
+        <dd>I wrote a preflight health check in Bash that validates the environment, confirms model availability and checks VRAM headroom before anything is submitted, and enforced single-job scheduling so stages never overlap. A Python quality-control gate scores each stage's output against defined thresholds and rejects failures before they reach the next stage. Pipeline configuration lives in a versioned recipe file, with the operational runbook kept under Git alongside it.</dd>
+
+        <dt>Result</dt>
+        <dd>Out-of-memory crashes stopped. Failed output is caught at the stage that produced it rather than after three more stages of wasted compute, and any run can be reproduced from its recipe.</dd>
+      </dl>
+
+      <div class="stack">
+        <span>Python</span><span>Bash</span><span>CUDA / VRAM budgeting</span>
+        <span>Job scheduling</span><span>Automated QC</span><span>Git</span><span>Runbook docs</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">Toolkit</p>
+    <h2>What I work with</h2>
+    <div class="grid2" style="margin-top:26px">
+      <div class="skillgroup">
+        <h3>Networking</h3>
+        <p>QoS and traffic shaping (HTB, TBF), DSCP classification and marking, 802.3ad LACP link aggregation, WireGuard site-to-site VPN, nftables policy, routing and subnetting, TCP/IP, DNS, DHCP, OSI model, performance benchmarking with iperf3 and tcpdump</p>
+      </div>
+      <div class="skillgroup">
+        <h3>Systems</h3>
+        <p>Linux (Ubuntu, Debian), command-line administration, systemd, network namespaces, boot and kernel driver troubleshooting, initramfs and dracut, Windows 10/11</p>
+      </div>
+      <div class="skillgroup">
+        <h3>Languages</h3>
+        <p>Python, Bash, JavaScript, SQL, HTML5, CSS3</p>
+      </div>
+      <div class="skillgroup">
+        <h3>Web &amp; tooling</h3>
+        <p>React, React Native, Node.js, Express, MongoDB, REST APIs, Git, Pyodide / WebAssembly</p>
+      </div>
+      <div class="skillgroup">
+        <h3>Practice</h3>
+        <p>Before/after measurement and reporting, automated testing, technical documentation, structured troubleshooting by layer, version control</p>
+      </div>
+      <div class="skillgroup">
+        <h3>Studying</h3>
+        <p>Cisco CCNA · ITIL 4 Foundation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">Background</p>
+    <h2>Education</h2>
+    <div style="margin-top:26px">
+      <div class="edu now">
+        <div class="t">Advanced Diploma of Networking Engineering</div>
+        <div class="i">Abbey College Australia, Sydney</div>
+        <div class="d">Completing October 2026 · enterprise network design, QoS and traffic engineering, routing and switching, WAN technologies, network security</div>
+      </div>
+      <div class="edu">
+        <div class="t">Diploma of Information Technology</div>
+        <div class="i">Wells International College, Australia</div>
+        <div class="d">2024</div>
+      </div>
+      <div class="edu">
+        <div class="t">Bachelor of Software Engineering</div>
+        <div class="i">Politécnico Grancolombiano, Colombia</div>
+        <div class="d">2024 · four-year degree · software engineering, algorithms and data structures, databases, object-oriented programming — primarily in Python</div>
+      </div>
+      <div class="edu">
+        <div class="t">Full Stack Web Development Bootcamp</div>
+        <div class="i">Nucamp</div>
+        <div class="d">2023 · HTML, CSS, JavaScript, React, React Native, Node.js, Express, MongoDB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:0">
+  <div class="wrap">
+    <p class="sec-label">Contact</p>
+    <h2>Open to IT support, network operations and junior developer roles in Sydney</h2>
+    <p class="muted">On-site, hybrid or remote. The fastest way to reach me is email — I answer the same day.</p>
+    <div class="links">
+      <a class="primary" href="mailto:hectorcabra95@gmail.com">hectorcabra95@gmail.com</a>
+      
+      <a href="https://github.com/Autokratz">GitHub</a>
+      <a href="Hector-Cabra-CV.pdf" download>Download CV</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Every figure on this page is measured, not estimated. Raw capture files, utilisation series and the scripts that produced them are in the <a href="https://github.com/Autokratz/network-qos-lab">lab repository</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var SERIES = {
+    chart1: {
+      max: 105,
+      before: [0,0,0,0,0,0,0,0,90.4,98.8,98.6,98.9,99.0,98.9,99.0,98.9,99.0,99.1,99.0,98.9,98.8,99.1,99.0,99.0,99.1,98.8,99.2,98.9,98.9,99.1,98.8,99.1,99.0,99.0,98.9,99.0,98.9,99.0,98.9,98.9,99.1,98.8,98.9,98.9,98.9,99.1,99.1,99.0,98.9,99.0,98.8,98.7,98.7,98.7,98.8,98.7,98.7,98.9,98.7,98.7,5.9,0,0,0,0,0,0,0,0,0],
+      after:  [0,0,0,0,0,85.8,98.5,98.6,98.6,99.2,98.9,98.7,98.8,98.6,98.8,98.8,98.7,98.9,98.8,98.9,98.6,98.7,98.7,98.7,98.7,98.9,98.8,98.7,98.7,98.7,98.8,98.7,98.7,98.9,98.8,98.9,98.8,98.7,98.8,98.7,98.7,98.8,98.9,98.8,98.8,98.6,98.5,98.7,98.7,98.5,30.2,0,0,0,0]
+    },
+    chart2: {
+      max: 105,
+      before: [0,0,0,0,0,76.3,100.6,100.7,100.6,100.6,100.7,100.6,100.6,100.6,100.7,100.6,100.6,100.6,100.6,100.7,100.6,100.6,100.6,100.6,100.7,100.6,100.7,100.6,100.6,100.6,100.7,100.7,100.6,100.7,100.6,100.6,100.7,100.6,100.6,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.6,95.9,0,0,0],
+      after:  [0,0,0,0,4.2,5.3,5.4,5.3,5.4,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.4,5.3,5.3,5.3,5.4,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,4.8,0]
+    }
+  };
+
+  var NS = "http://www.w3.org/2000/svg";
+  function el(n, attrs){
+    var e = document.createElementNS(NS, n);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function draw(hostId, cfg){
+    var host = document.getElementById(hostId);
+    if (!host) return;
+
+    var W = 760, H = 240;
+    var padL = 46, padR = 14, padT = 12, padB = 30;
+    var iw = W - padL - padR, ih = H - padT - padB;
+    var maxY = cfg.max;
+    var n = Math.max(cfg.before.length, cfg.after.length);
+
+    var svg = el("svg", {
+      viewBox: "0 0 " + W + " " + H,
+      role: "img",
+      "aria-label": "Link utilisation over time, before and after remediation"
+    });
+
+    // gridlines + y labels
+    [0, 25, 50, 75, 100].forEach(function(v){
+      var y = padT + ih - (v / maxY) * ih;
+      svg.appendChild(el("line", {
+        x1: padL, y1: y, x2: W - padR, y2: y,
+        stroke: "var(--line)", "stroke-width": 1,
+        "stroke-dasharray": v === 0 ? "0" : "2 4", fill: "none"
+      }));
+      var t = el("text", {
+        x: padL - 9, y: y + 4, "text-anchor": "end",
+        "font-family": "var(--m)", "font-size": 10.5, fill: "var(--ink-3)"
+      });
+      t.textContent = v + "%";
+      svg.appendChild(t);
+    });
+
+    // x labels
+    [0, Math.round(n/2), n - 1].forEach(function(i){
+      var x = padL + (i / (n - 1)) * iw;
+      var t = el("text", {
+        x: x, y: H - 9, "text-anchor": i === 0 ? "start" : (i === n - 1 ? "end" : "middle"),
+        "font-family": "var(--m)", "font-size": 10.5, fill: "var(--ink-3)"
+      });
+      t.textContent = i + "s";
+      svg.appendChild(t);
+    });
+
+    function path(data, color, dash){
+      var d = "";
+      for (var i = 0; i < data.length; i++){
+        var x = padL + (i / (n - 1)) * iw;
+        var y = padT + ih - (Math.min(data[i], maxY) / maxY) * ih;
+        d += (i === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1);
+      }
+      svg.appendChild(el("path", {
+        d: d, fill: "none", stroke: color, "stroke-width": 2,
+        "stroke-linejoin": "round", "stroke-linecap": "round",
+        "stroke-dasharray": dash || "0"
+      }));
+    }
+
+    path(cfg.before, "var(--before)", "5 3");
+    path(cfg.after, "var(--after)");
+
+    host.appendChild(svg);
+  }
+
+  draw("chart1", SERIES.chart1);
+  draw("chart2", SERIES.chart2);
+})();
+</script>
+</body>
+</html>
