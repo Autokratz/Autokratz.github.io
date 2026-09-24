@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hector Cabra — Network & Infrastructure Engineering</title>
-<meta name="description" content="Network and infrastructure engineering portfolio. Measured QoS, LACP and site-to-site VPN lab work, a WebAssembly learning platform, and GPU pipeline orchestration.">
+<meta name="description" content="Network and infrastructure engineering portfolio. Measured QoS, LACP and site-to-site VPN remediation, a scripted Active Directory lab with fault injection, and a WebAssembly learning platform.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -89,6 +89,7 @@ h1{
 .meta a:hover{color:var(--accent); border-color:var(--accent)}
 
 /* sections */
+[id]{scroll-margin-top:58px}
 section{padding-block:clamp(44px,7vw,72px); border-bottom:1px solid var(--line)}
 .sec-label{
   font-family:var(--m); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
@@ -155,6 +156,50 @@ figcaption{
 .legend span{display:flex; align-items:center; gap:6px; color:var(--ink-2)}
 .legend i{width:16px; height:3px; border-radius:2px; display:block}
 
+/* tables */
+.scroller{
+  overflow-x:auto; border:1px solid var(--line); border-radius:12px;
+  background:var(--surface); margin:24px 0; box-shadow:var(--shadow);
+}
+.scroller table{border-collapse:collapse; width:100%; font-size:14.5px}
+.scroller th,.scroller td{
+  text-align:left; padding:11px 15px; border-bottom:1px solid var(--line); vertical-align:top;
+}
+.scroller thead th{
+  font-family:var(--m); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; background:var(--surface-2); white-space:nowrap;
+}
+.scroller tbody tr:last-child td{border-bottom:0}
+
+/* in-progress badge */
+.wip{
+  font-family:var(--m); font-size:9.5pt; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--before); border:1px solid var(--before); border-radius:4px;
+  padding:1px 6px; margin-left:8px; white-space:nowrap;
+}
+.faults table{min-width:640px}
+.faults td:first-child{font-weight:600; white-space:normal}
+.faults td:nth-child(2){color:var(--ink-3)}
+.status-note{
+  font-family:var(--m); font-size:12px; line-height:1.55; color:var(--ink-2);
+  background:var(--surface-2); border-left:2px solid var(--before);
+  border-radius:0 7px 7px 0; padding:11px 14px; margin:20px 0 0; max-width:none;
+}
+
+/* section nav */
+nav.toc{
+  position:sticky; top:0; z-index:5; background:var(--bg);
+  border-bottom:1px solid var(--line); padding-block:10px;
+  margin-bottom:0;
+}
+nav.toc .inner{display:flex; gap:7px; flex-wrap:wrap; max-width:900px; margin:0 auto; padding-inline:22px}
+nav.toc a{
+  font-family:var(--m); font-size:11px; letter-spacing:.03em; text-decoration:none;
+  color:var(--ink-2); background:var(--surface); border:1px solid var(--line);
+  border-radius:999px; padding:4px 11px; white-space:nowrap;
+}
+nav.toc a:hover{border-color:var(--accent); color:var(--accent)}
+
 /* lists */
 ul.bullets{margin:0 0 15px; padding-left:20px; max-width:66ch}
 ul.bullets li{margin-bottom:9px}
@@ -212,11 +257,24 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
   </div>
 </header>
 
-<section>
+<nav class="toc" aria-label="Sections">
+  <div class="inner">
+    <a href="#work">Work</a>
+    <a href="#qos">QoS &amp; voice</a>
+    <a href="#wan">WAN recovery</a>
+    <a href="#ad">Active Directory</a>
+    <a href="#neuron">NEURON</a>
+    <a href="#toolkit">Toolkit</a>
+    <a href="#education">Background</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section id="work">
   <div class="wrap">
 
     <!-- CASE 1 -->
-    <article class="case">
+    <article class="case" id="qos">
       <p class="sec-label">Case study 01</p>
       <div class="case-head"><h2>Protecting voice inside a saturated uplink</h2></div>
       <p class="case-sub">Campus LAN · QoS classification + 802.3ad link aggregation · Linux network namespaces</p>
@@ -276,7 +334,7 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
     </article>
 
     <!-- CASE 2 -->
-    <article class="case">
+    <article class="case" id="wan">
       <p class="sec-label">Case study 02</p>
       <div class="case-head"><h2>Recovering a WAN link at 100% saturation</h2></div>
       <p class="case-sub">Remote branch · WireGuard site-to-site VPN + time-based bandwidth policy</p>
@@ -336,8 +394,61 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
     </article>
 
     <!-- CASE 3 -->
-    <article class="case">
-      <p class="sec-label">Case study 03</p>
+    <article class="case" id="ad">
+      <p class="sec-label">Case study 03 <span class="wip">In progress</span></p>
+      <div class="case-head"><h2>A domain that builds itself, then breaks on purpose</h2></div>
+      <p class="case-sub">Windows Server 2022 · Active Directory · PowerShell · fault injection</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>Most Active Directory labs demonstrate that a domain <em>can</em> be stood up. That isn't a difficult claim and it isn't worth much, because the wizard does the work. A domain that exists only as a sequence of remembered clicks can't be rebuilt under pressure, and the person who built it becomes the single point of failure.</dd>
+
+        <dt>Approach</dt>
+        <dd>I built a 32-user fictional freight company — forest, DNS, DHCP, OU tree, group model, policies, delegation — entirely from idempotent PowerShell. No click-through, and no screenshot of a wizard anywhere in the repository. Then two things most labs skip: a health check that answers 25 questions about the domain with PASS, WARN or FAIL and exits non-zero on any failure, and a fault injector that deliberately breaks the domain three times so the diagnosis is documented rather than assumed.</dd>
+
+        <dt>Result</dt>
+        <dd>Every fault was chosen because <strong>the symptom the user reports points nowhere near the cause</strong>, and the obvious first check comes back completely clean. That table below is the point of the whole project — the habit worth building is that a clean obvious check narrows a problem, it does not close it.</dd>
+      </dl>
+
+      <div class="scroller faults">
+        <table>
+          <thead>
+            <tr><th>What the user says</th><th>The obvious check said</th><th>Where the answer actually was</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"My desktop settings disappeared"</td>
+              <td>GPO linked and enabled</td>
+              <td>Security filtering removed <strong>Read</strong> for Authenticated Users, so the computer couldn't evaluate the policy at all. GPMC looks normal.</td>
+            </tr>
+            <tr>
+              <td>"It keeps locking me out and I'm not even logged in"</td>
+              <td>Account locked; password reset changed nothing</td>
+              <td>A stale background credential retrying. Event <strong>4740</strong> names the source workstation. Unlocking first just restarts the loop.</td>
+            </tr>
+            <tr>
+              <td>"Nobody at the site can log in"</td>
+              <td>DC up, console browsing the web fine</td>
+              <td>The DC's own resolver was pointed at public DNS. SRV records stopped resolving — outbound browsing worked <em>because</em> of the fault.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="status-note"><strong>Status:</strong> the build scripts, the health check and the fault injection are written. Captured evidence is committed after the first full run — no figures are published here before they're measured.</p>
+
+      <div class="stack">
+        <span>Windows Server 2022</span><span>Active Directory</span><span>PowerShell</span>
+        <span>Group Policy</span><span>DNS / DHCP</span><span>dsacls delegation</span><span>KVM/QEMU</span>
+      </div>
+      <div class="links">
+        <a class="primary" href="https://github.com/Autokratz/windows-ad-lab">See the lab →</a>
+      </div>
+    </article>
+
+    <!-- CASE 4 -->
+    <article class="case" id="neuron">
+      <p class="sec-label">Case study 04</p>
       <div class="case-head"><h2>NEURON — running real Python in the browser</h2></div>
       <p class="case-sub">Learning platform · Pyodide / WebAssembly · no backend</p>
 
@@ -368,9 +479,9 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
       </div>
     </article>
 
-    <!-- CASE 4 -->
+    <!-- CASE 5 -->
     <article class="case">
-      <p class="sec-label">Case study 04</p>
+      <p class="sec-label">Case study 05</p>
       <div class="case-head"><h2>Keeping a single GPU from falling over</h2></div>
       <p class="case-sub">Batch inference orchestration · automated quality gating · 12 GB VRAM ceiling</p>
 
@@ -396,7 +507,7 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
 
 <section>
   <div class="wrap">
-    <p class="sec-label">Toolkit</p>
+    <p class="sec-label" id="toolkit">Toolkit</p>
     <h2>What I work with</h2>
     <div class="grid2" style="margin-top:26px">
       <div class="skillgroup">
@@ -429,7 +540,7 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
 
 <section>
   <div class="wrap">
-    <p class="sec-label">Background</p>
+    <p class="sec-label" id="education">Background</p>
     <h2>Education</h2>
     <div style="margin-top:26px">
       <div class="edu now">
@@ -458,7 +569,7 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
 
 <section style="border-bottom:0">
   <div class="wrap">
-    <p class="sec-label">Contact</p>
+    <p class="sec-label" id="contact">Contact</p>
     <h2>Open to IT support, network operations and junior developer roles in Sydney</h2>
     <p class="muted">On-site, hybrid or remote. The fastest way to reach me is email — I answer the same day.</p>
     <div class="links">
