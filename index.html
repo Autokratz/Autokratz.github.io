@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hector Cabra — Network & Infrastructure Engineering</title>
-<meta name="description" content="Network and infrastructure engineering portfolio. Measured QoS, LACP and site-to-site VPN remediation, a scripted Active Directory lab with fault injection, and a WebAssembly learning platform.">
+<meta name="description" content="Network and infrastructure engineering portfolio. Measured QoS, LACP and site-to-site VPN remediation, a scripted Active Directory lab with fault injection, and a typed, tested Python monitoring package.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -263,6 +263,7 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
     <a href="#qos">QoS &amp; voice</a>
     <a href="#wan">WAN recovery</a>
     <a href="#ad">Active Directory</a>
+    <a href="#netwatch">netwatch</a>
     <a href="#neuron">NEURON</a>
     <a href="#toolkit">Toolkit</a>
     <a href="#education">Background</a>
@@ -447,8 +448,43 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
     </article>
 
     <!-- CASE 4 -->
-    <article class="case" id="neuron">
+    <article class="case" id="netwatch">
       <p class="sec-label">Case study 04</p>
+      <div class="case-head"><h2>netwatch — alerting that doesn't cry wolf</h2></div>
+      <p class="case-sub">Python package · 118 tests · mypy strict · CI on three versions</p>
+
+      <dl class="qa">
+        <dt>Problem</dt>
+        <dd>Monitoring tools either want a server, a database and a dashboard, or they are a <code>ping</code> in a <code>while</code> loop that nobody can act on. And the naive version of either has the same flaw: it alerts on the first breached sample and clears on the first good one. Against a genuinely flapping link that produces an alert and a recovery every interval — and <strong>a channel that cries wolf gets muted, which turns your monitoring into an outage you hear about from a user.</strong></dd>
+
+        <dt>Approach</dt>
+        <dd>A dependency-free package with hysteresis at its centre: a breach must persist for three consecutive evaluations before firing, and recovery for five before resolving. The asymmetry is deliberate — it should be harder to convince the system a fault is over than that it started. Events fire on transitions only, so a long incident produces two lines, not two hundred.</dd>
+
+        <dt>Result</dt>
+        <dd>Testability drove the architecture rather than following it. Probes sit behind a Protocol and never raise, so an unreachable host is just data. The alert engine holds no clock and does no I/O, which is why twenty minutes of hysteresis is exercised in a millisecond. A non-zero exit code makes it usable as a post-change gate, not only a dashboard.</dd>
+      </dl>
+
+      <div class="metrics">
+        <div class="metric"><div class="lab">Tests</div><div class="pair"><span class="to">118</span></div><div class="delta">0.26s to run</div></div>
+        <div class="metric"><div class="lab">Branch coverage</div><div class="pair"><span class="to">96%</span></div><div class="delta">enforced at 90% in CI</div></div>
+        <div class="metric"><div class="lab">Type checking</div><div class="pair"><span class="to">strict</span></div><div class="delta">mypy, src and tests</div></div>
+        <div class="metric"><div class="lab">Runtime deps</div><div class="pair"><span class="to">0</span></div><div class="delta">stdlib only</div></div>
+      </div>
+
+      <p class="status-note"><strong>Found by a test:</strong> the config silently ignored unknown keys, so a typo'd <code>los_pct</code> would be dropped without a word and the threshold never applied. The monitor would run, look healthy, and never fire. Unknown keys are now a startup error that lists the valid ones.</p>
+
+      <div class="stack">
+        <span>Python 3.11+</span><span>pytest</span><span>mypy --strict</span><span>ruff</span>
+        <span>GitHub Actions</span><span>pre-commit</span><span>ADRs</span>
+      </div>
+      <div class="links">
+        <a class="primary" href="https://github.com/Autokratz/netwatch">Read the code →</a>
+      </div>
+    </article>
+
+    <!-- CASE 5 -->
+    <article class="case" id="neuron">
+      <p class="sec-label">Case study 05</p>
       <div class="case-head"><h2>NEURON — running real Python in the browser</h2></div>
       <p class="case-sub">Learning platform · Pyodide / WebAssembly · no backend</p>
 
@@ -479,9 +515,9 @@ footer p{font-family:var(--m); font-size:12.5px; color:var(--ink-3)}
       </div>
     </article>
 
-    <!-- CASE 5 -->
+    <!-- CASE 6 -->
     <article class="case">
-      <p class="sec-label">Case study 05</p>
+      <p class="sec-label">Case study 06</p>
       <div class="case-head"><h2>Keeping a single GPU from falling over</h2></div>
       <p class="case-sub">Batch inference orchestration · automated quality gating · 12 GB VRAM ceiling</p>
 
