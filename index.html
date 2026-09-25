@@ -3,667 +3,608 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hector Cabra — measured network engineering</title>
-<meta name="description" content="Network and infrastructure engineer in Sydney. Six pieces of work, each with the fault, the fix, and the measurement that proves it.">
-<meta name="theme-color" content="#E8EBED">
+<title>Hector Cabra, software and network engineer</title>
+<meta name="description" content="Hector Cabra, Sydney. Software engineer and network engineer. Six projects with measured results and published capture files.">
+<meta name="theme-color" content="#FAFAF7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <style>
 :root{
   color-scheme: light;
-  --paper:#E8EBED;
-  --panel:#F5F7F8;
-  --grid:#D2D9DD;
-  --rule:#BFC8CD;
-  --rule-hard:#8E9BA3;
-  --ink:#14212B;
-  --ink-2:#48585F;
-  --ink-3:#77848B;
-  --red:#C3392B;
-  --red-soft:#F2DED9;
-  --blue:#10467F;
-  --blue-soft:#D9E2EE;
-  --display:'Archivo','Helvetica Neue',Arial,sans-serif;
-  --prose:'Spectral',Georgia,'Times New Roman',serif;
-  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-  --pad:clamp(18px,4vw,34px);
+  --paper:#FAFAF7;
+  --card:#FFFFFF;
+  --ink:#14161A;
+  --ink-2:#4B525A;
+  --ink-3:#7D858E;
+  --rule:#DFDFD8;
+  --soft:#8A9199;
+
+  --sw:#E4572E;          /* software line  */
+  --sw-tint:#FBEAE3;
+  --net:#1B5299;         /* networks line  */
+  --net-tint:#E2E9F3;
+  --live:#F2B705;        /* status, you-are-here */
+
+  --f:'Familjen Grotesk','Helvetica Neue',Arial,sans-serif;
+  --gut:clamp(20px,5vw,40px);
 }
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{margin:0}
 body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--prose);
-  font-size:17px;
-  line-height:1.6;
+  background:var(--paper);color:var(--ink);
+  font-family:var(--f);font-size:17px;line-height:1.55;
+  font-variant-numeric:tabular-nums;
   -webkit-font-smoothing:antialiased;
 }
-.sheet{max-width:1080px;margin:0 auto;padding-inline:var(--pad)}
-a{color:var(--blue)}
-::selection{background:var(--blue);color:var(--panel)}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
-/* ---------- title block ---------- */
-.titleblock{border-bottom:2px solid var(--ink);padding-block:22px 0}
-.tb-grid{display:grid;grid-template-columns:1fr auto;gap:8px 32px;align-items:end}
-.tb-name{
-  font-family:var(--display);font-weight:800;
-  font-size:clamp(34px,7.4vw,74px);line-height:.9;letter-spacing:-.035em;margin:0;
-}
-.tb-role{
-  font-family:var(--display);font-weight:500;font-size:clamp(14px,1.8vw,17px);
-  color:var(--ink-2);margin:10px 0 18px;letter-spacing:-.005em;
-}
-.tb-meta{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
-  border-top:1px solid var(--rule);
-}
-.tb-meta div{padding:9px 14px 10px;border-right:1px solid var(--rule)}
-.tb-meta div:first-child{padding-left:0}
-.tb-meta div:last-child{border-right:0}
-.tb-meta dt{font-family:var(--display);font-weight:500;font-size:11px;color:var(--ink-3);margin:0 0 3px;letter-spacing:.01em}
-.tb-meta dd{font-family:var(--display);font-weight:600;font-size:14px;margin:0;overflow-wrap:anywhere}
-.tb-meta a{text-decoration:none;border-bottom:1px solid var(--blue-soft)}
-.tb-meta a:hover{border-bottom-color:var(--blue)}
-.avail{display:inline-flex;align-items:center;gap:7px}
-.avail::before{content:'';width:8px;height:8px;background:var(--blue)}
+/* browser surfaces belong to the design too */
+::selection{background:var(--live);color:var(--ink)}
+:focus-visible{outline:3px solid var(--net);outline-offset:3px;border-radius:2px}
+a{color:var(--net);text-underline-offset:3px;text-decoration-thickness:1.5px}
+a:hover{text-decoration-thickness:2.5px}
+html{scrollbar-color:var(--soft) var(--paper);scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:var(--soft);border:3px solid var(--paper);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--ink-2)}
+input,textarea{caret-color:var(--sw)}
 
-/* ---------- lede ---------- */
-.lede{padding-block:clamp(38px,7vw,66px) clamp(26px,4vw,40px);
-  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
-  gap:clamp(20px,5vw,60px);align-items:end}
-@media (max-width:760px){ .lede{grid-template-columns:1fr;gap:4px} }
-.lede p{
-  font-family:var(--display);font-weight:600;
-  font-size:clamp(23px,3.6vw,38px);line-height:1.18;letter-spacing:-.025em;
-  max-width:19ch;margin:0;
-}
-.lede p em{font-style:normal;color:var(--red)}
-.lede .sub{
-  font-family:var(--prose);font-weight:400;font-size:17px;line-height:1.62;
-  color:var(--ink-2);max-width:52ch;margin:0 0 6px;letter-spacing:0;
-}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:var(--gut)}
 
-/* ---------- report ---------- */
-.report{border-top:1px solid var(--rule-hard);padding-block:clamp(40px,6vw,64px)}
-.report:first-of-type{border-top:2px solid var(--ink)}
+/* ---------------- masthead ---------------- */
+.top{padding-block:clamp(30px,6vw,56px) 0}
+.name{
+  font-weight:700;font-size:clamp(38px,8vw,88px);line-height:.92;
+  letter-spacing:-.045em;margin:0;
+}
 .claim{
-  font-family:var(--display);font-weight:700;
-  font-size:clamp(21px,3.1vw,31px);line-height:1.2;letter-spacing:-.025em;
-  max-width:26ch;margin:0 0 6px;
+  font-weight:600;font-size:clamp(20px,3.3vw,34px);line-height:1.15;
+  letter-spacing:-.025em;margin:16px 0 0;max-width:20ch;
 }
-.where{font-family:var(--display);font-weight:500;font-size:13px;color:var(--ink-3);margin:0 0 26px}
+.claim .a{color:var(--sw)}
+.claim .b{color:var(--net)}
+.sub{font-size:clamp(16px,1.9vw,18px);color:var(--ink-2);max-width:56ch;margin:16px 0 0}
 
-/* measured pair */
-.pair{display:flex;align-items:flex-end;gap:clamp(16px,4vw,44px);flex-wrap:wrap;margin-bottom:8px}
-.q{min-width:104px}
-.q .k{font-family:var(--display);font-weight:500;font-size:11.5px;color:var(--ink-3);margin-bottom:5px}
-.q .from{
-  font-family:var(--display);font-weight:600;font-size:17px;color:var(--red);
-  font-variant-numeric:tabular-nums;line-height:1.1;
-}
-.q .from s{text-decoration:line-through;text-decoration-thickness:1.5px}
-.q .to{
-  font-family:var(--display);font-weight:800;font-size:clamp(28px,4.6vw,46px);
-  color:var(--blue);letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1;
-}
-.q .to u{text-decoration:none;font-size:.45em;font-weight:600;margin-left:3px;letter-spacing:0}
-.q.plain .to{color:var(--ink)}
+.facts{display:flex;gap:10px 26px;flex-wrap:wrap;margin-top:22px;font-size:15px}
+.facts a{color:var(--ink-2);text-decoration:none;border-bottom:2px solid var(--rule);padding-bottom:1px}
+.facts a:hover{color:var(--net);border-bottom-color:var(--net)}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)}
+.status i{width:11px;height:11px;border-radius:50%;background:var(--live);box-shadow:0 0 0 3px #F8E3A6;display:block}
 
-/* figures */
-figure{margin:28px 0 0;background:var(--panel);border:1px solid var(--rule-hard)}
-figure .plot{
-  position:relative;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:26px 26px;
-  border-bottom:1px solid var(--rule);
-}
-figure svg{display:block;width:100%;height:auto}
-figcaption{
-  font-family:var(--display);font-size:12.5px;color:var(--ink-2);
-  padding:11px 14px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
-}
-figcaption b{font-weight:700;color:var(--ink);flex:none}
-.key{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--display);font-size:12px;color:var(--ink-2);padding:10px 14px 0}
-.key span{display:flex;align-items:center;gap:6px}
-.key i{width:20px;height:0;border-top-width:2.5px;border-top-style:solid;display:block}
-/* The pen travels left to right, like a chart recorder. A clip wipe also
-   works on a dashed trace, which animating stroke-dashoffset does not.
-   Default is DRAWN. Only a plot confirmed to be below the fold gets armed,
-   so any failure leaves the data visible rather than blank. */
-.wipe{transform:scaleX(1);transition:transform 1.9s cubic-bezier(.33,0,.15,1)}
+/* ---------------- route map ---------------- */
+.mapwrap{margin-top:clamp(26px,5vw,44px);overflow-x:auto;overflow-y:hidden;padding-bottom:6px}
+.mapwrap svg{display:block;min-width:820px;width:100%;height:auto}
+.mhint{font-size:13.5px;color:var(--ink-3);margin:8px 0 0}
+@media (min-width:900px){ .mhint{display:none} }
+
+.rt{stroke-linecap:round;stroke-linejoin:round;fill:none;stroke-width:11}
+.rt.sw,.linelabel.sw{stroke:var(--sw)}
+.rt.net,.linelabel.net{stroke:var(--net)}
+.linelabel.sw{fill:var(--sw);stroke:none}
+.linelabel.net{fill:var(--net);stroke:none}
+.disc[data-l="sw"]{stroke:var(--sw)}
+.disc[data-l="net"]{stroke:var(--net)}
+.rt.draw{stroke-dasharray:var(--len,0)}
+.mapwrap.play .rt.draw{animation:draw 1.5s cubic-bezier(.3,0,.2,1) both}
+@keyframes draw{from{stroke-dashoffset:var(--len,0)}to{stroke-dashoffset:0}}
+/* chart marks: one palette, declared once in :root */
+.ln-a,.ln-b{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.ln-a{stroke:var(--sw);stroke-dasharray:8 5}
+.ln-b{stroke:var(--net)}
+.ax{font:13px var(--f);fill:var(--ink-3)}
+.gridline{stroke:var(--rule)}
+.gridline.base{stroke-width:2}
+
+/* plot reveal lives here, not injected from script */
+.wipe{transform:scaleX(1);transition:transform 1.6s cubic-bezier(.3,0,.2,1)}
 figure.armed .wipe{transform:scaleX(0)}
+a.stop{cursor:pointer;text-decoration:none}
+a.stop:focus-visible{outline-offset:6px}
+.stop .disc{fill:var(--card);stroke-width:5;transition:r .18s ease}
+.stop .lab{font-size:15px;font-weight:600;fill:var(--ink);letter-spacing:-.015em}
+.stop .met{font-size:13px;font-weight:500;fill:var(--ink-3)}
+.stop:hover .disc,.stop:focus-visible .disc{r:11}
+.stop:hover .lab,.stop:focus-visible .lab{fill:var(--net)}
+.xchg rect{fill:var(--card);stroke:var(--ink);stroke-width:4}
+.xchg text{font-weight:700;font-size:14px;fill:var(--ink)}
+.linelabel{font-weight:700;font-size:14px;letter-spacing:.02em}
 
-/* disclosure */
-details{margin-top:26px;border-top:1px solid var(--rule)}
-details summary{
-  font-family:var(--display);font-weight:600;font-size:14px;cursor:pointer;
-  padding:13px 0 0;list-style:none;display:flex;align-items:center;gap:9px;color:var(--blue);
+/* ---------------- stations ---------------- */
+.station{border-top:2px solid var(--rule);padding-block:clamp(34px,5vw,58px);scroll-margin-top:16px}
+.tag{
+  display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:14px;
+  padding:5px 13px 5px 9px;border-radius:99px;margin-bottom:16px;
 }
-details summary::-webkit-details-marker{display:none}
-details summary::before{
-  content:'';width:11px;height:11px;border:1.5px solid var(--blue);flex:none;
-  background:linear-gradient(var(--blue),var(--blue)) center/7px 1.5px no-repeat,
-             linear-gradient(var(--blue),var(--blue)) center/1.5px 7px no-repeat;
-}
-details[open] summary::before{background:linear-gradient(var(--blue),var(--blue)) center/7px 1.5px no-repeat}
-details .body{padding-top:16px;max-width:62ch}
-details .body p{margin:0 0 13px;color:var(--ink-2)}
-details .body p:last-child{margin-bottom:0}
-details .body strong{color:var(--ink);font-weight:500}
-.capture{
-  font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ink-2);
-  background:var(--panel);border-left:2px solid var(--rule-hard);
-  padding:12px 15px;margin:0 0 13px;overflow-x:auto;white-space:pre;
-}
-.spec{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}
-.spec span{font-family:var(--display);font-size:12px;color:var(--ink-2);border:1px solid var(--rule);padding:4px 9px}
-.go{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-.go a{
-  font-family:var(--display);font-weight:600;font-size:14px;text-decoration:none;
-  border:1.5px solid var(--ink);color:var(--ink);padding:9px 17px;transition:background .15s,color .15s;
-}
-.go a:hover{background:var(--ink);color:var(--paper)}
-.go a.key-action{background:var(--blue);border-color:var(--blue);color:var(--panel)}
-.go a.key-action:hover{background:var(--ink);border-color:var(--ink)}
+.tag i{width:13px;height:13px;border-radius:50%;display:block;flex:none}
+.tag.sw{background:var(--sw-tint);color:#8C2F13}
+.tag.sw i{background:var(--sw)}
+.tag.net{background:var(--net-tint);color:#123A6E}
+.tag.net i{background:var(--net)}
 
-/* instrument */
-.instr{border:1px solid var(--rule-hard);background:var(--panel);margin:28px 0 0;padding:0}
-.instr canvas{display:block;width:100%;height:auto;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:26px 26px;border-bottom:1px solid var(--rule);}
-.instr-foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:13px 14px}
-.instr-foot .rd{font-family:var(--display);font-weight:500;font-size:11.5px;color:var(--ink-3)}
-.instr-foot .rv{
-  font-family:var(--display);font-weight:800;font-size:30px;color:var(--red);
-  font-variant-numeric:tabular-nums;letter-spacing:-.03em;line-height:1;transition:color .45s;
+.head{font-weight:700;font-size:clamp(23px,3.5vw,36px);line-height:1.13;letter-spacing:-.03em;margin:0 0 10px;max-width:24ch}
+.scene{font-size:16px;color:var(--ink-3);margin:0 0 26px}
+
+.nums{display:flex;gap:clamp(18px,4vw,48px);flex-wrap:wrap;margin-bottom:28px}
+.n .lab{font-size:14px;color:var(--ink-3);margin-bottom:4px}
+.n .was{font-size:16px;color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1.5px}
+.n .now{font-weight:700;font-size:clamp(30px,5vw,50px);letter-spacing:-.04em;line-height:1}
+.n .now u{text-decoration:none;font-size:.42em;font-weight:600;margin-left:3px}
+.n.sw .now{color:var(--sw)} .n.net .now{color:var(--net)} .n.plain .now{color:var(--ink)}
+
+figure{margin:0 0 26px;background:var(--card);border:2px solid var(--rule);border-radius:14px;padding:18px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:14.5px;color:var(--ink-2);margin-top:14px;padding-top:13px;border-top:1px solid var(--rule)}
+.keys{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--ink-2);margin-bottom:12px}
+.keys span{display:flex;align-items:center;gap:7px}
+.keys i{width:22px;height:0;border-top:3px solid;display:block;border-radius:2px}
+.keys i.k-a{border-color:var(--sw)}
+.keys i.k-b{border-color:var(--net)}
+
+details{border:2px solid var(--rule);border-radius:14px;background:var(--card);margin-bottom:22px}
+summary{font-weight:600;font-size:16px;cursor:pointer;padding:15px 18px;list-style:none;display:flex;align-items:center;gap:11px}
+summary::-webkit-details-marker{display:none}
+summary .pm{width:20px;height:20px;border-radius:50%;background:var(--ink);position:relative;flex:none}
+summary .pm::before,summary .pm::after{content:'';position:absolute;background:var(--card);inset:50% 5px auto 5px;height:2.5px;margin-top:-1.25px;border-radius:2px;transition:transform .22s ease}
+summary .pm::after{transform:rotate(90deg)}
+details[open] summary .pm::after{transform:rotate(0)}
+details[open] summary{border-bottom:1px solid var(--rule)}
+.inner{padding:16px 18px 6px;max-width:66ch}
+.inner p{margin:0 0 13px;color:var(--ink-2)}
+.inner strong{color:var(--ink);font-weight:600}
+.grab{
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;line-height:1.75;
+  background:var(--paper);border:1px solid var(--rule);border-radius:10px;
+  padding:13px 15px;margin:0 0 13px;overflow-x:auto;white-space:pre;color:var(--ink-2);
 }
-.instr-foot .rv.ok{color:var(--blue)}
-.instr-foot .un{font-family:var(--display);font-size:13px;color:var(--ink-3);font-weight:600}
-.instr-foot button{
-  font-family:var(--display);font-weight:600;font-size:14px;cursor:pointer;margin-left:auto;
-  border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:9px 17px;
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tools span{font-size:14px;color:var(--ink-2);background:var(--card);border:2px solid var(--rule);border-radius:99px;padding:5px 12px}
+.acts{display:flex;gap:11px;flex-wrap:wrap}
+.acts a{
+  font-weight:600;font-size:15.5px;text-decoration:none;border-radius:99px;
+  padding:11px 22px;border:2px solid var(--ink);color:var(--ink);
+  transition:background .16s,color .16s,border-color .16s;
 }
-.instr-foot button:hover{background:var(--blue);border-color:var(--blue)}
+.acts a:hover{background:var(--ink);color:var(--paper)}
+.acts a.go-sw{background:var(--sw);border-color:var(--sw);color:#fff}
+.acts a.go-sw:hover{background:var(--ink);border-color:var(--ink)}
+.acts a.go-net{background:var(--net);border-color:var(--net);color:#fff}
+.acts a.go-net:hover{background:var(--ink);border-color:var(--ink)}
+
+.note{
+  border-radius:14px;padding:15px 18px;margin:0 0 22px;font-size:15.5px;
+  background:#FDF6E0;border:2px solid #F0DCA0;color:#6A5205;
+}
+.note strong{color:#4A3903}
+
+/* interchange */
+.xsection{border-top:2px solid var(--rule);padding-block:clamp(38px,6vw,64px);scroll-margin-top:16px}
+.xcard{
+  background:var(--card);border:3px solid var(--ink);border-radius:20px;
+  padding:clamp(22px,4vw,38px);
+}
+.xcard h2{font-weight:700;font-size:clamp(22px,3.4vw,33px);letter-spacing:-.03em;line-height:1.15;margin:0 0 14px;max-width:26ch}
+.xcard p{color:var(--ink-2);max-width:62ch;margin:0 0 12px}
+.xbars{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.xbars b{font-weight:600;font-size:14px;padding:6px 14px;border-radius:99px;color:#fff}
 
 /* tables */
-.tbl{width:100%;border-collapse:collapse;font-family:var(--display);font-size:14.5px;margin-top:8px}
-.tbl th,.tbl td{text-align:left;padding:11px 14px 11px 0;border-bottom:1px solid var(--rule);vertical-align:top}
-.tbl th{font-weight:500;font-size:11.5px;color:var(--ink-3);border-bottom-color:var(--rule-hard)}
-.tbl td:first-child{font-weight:600;width:29%}
-.tbl td.body{font-weight:400;color:var(--ink-2)}
+.grid{width:100%;border-collapse:collapse;font-size:16px}
+.grid td{padding:14px 16px 14px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.grid td:first-child{font-weight:600;width:34%}
+.grid td.d{color:var(--ink-2)}
 
-section.block{border-top:1px solid var(--rule-hard);padding-block:clamp(36px,5vw,56px)}
-h2{font-family:var(--display);font-weight:700;font-size:clamp(20px,2.8vw,27px);letter-spacing:-.025em;margin:0 0 20px}
-
-footer{border-top:2px solid var(--ink);padding-block:26px 56px}
-footer p{font-family:var(--display);font-size:12.5px;color:var(--ink-3);max-width:76ch;margin:0}
+footer{border-top:2px solid var(--rule);padding-block:30px 60px}
+footer p{font-size:14.5px;color:var(--ink-3);max-width:74ch;margin:0}
 
 @media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition-duration:.001ms!important}
-  .trace{stroke-dashoffset:0}
+  html{scroll-behavior:auto}
+  *{transition-duration:.001ms!important;animation:none!important}
+  .rt.draw{stroke-dashoffset:0}
 }
-@media (max-width:640px){
-  .tb-grid{grid-template-columns:1fr}
-  /* one field per row: a long address must not collide with the next column */
-  .tb-meta{grid-template-columns:1fr}
-  .tb-meta div{padding-left:0;border-right:0;border-bottom:1px solid var(--rule)}
-  .tb-meta div:last-child{border-bottom:0}
-  .tbl td:first-child{width:auto;display:block;padding-bottom:2px;border-bottom:0}
-  .tbl td.body{display:block;padding-top:0}
+@media (max-width:660px){
+  .grid td:first-child{width:auto;display:block;border-bottom:0;padding-bottom:2px}
+  .grid td.d{display:block;padding-top:0}
+  .nums{gap:18px 26px}
 }
 </style>
 </head>
 <body>
 
-<div class="sheet">
+<header class="top">
+  <div class="wrap">
+    <h1 class="name">Hector Cabra</h1>
+    <p class="claim">I build the <span class="a">software</span> and I fix the <span class="b">network</span> it runs on.</p>
+    <p class="sub">Six projects below, on two lines. I measured every number here, and I commit the raw capture files next to the scripts that produced them.</p>
+    <p class="facts">
+      <span class="status"><i></i>Available now, Sydney</span>
+      <a href="mailto:hectorcabra95@gmail.com">hectorcabra95@gmail.com</a>
+      <a href="https://github.com/Autokratz">github.com/Autokratz</a>
+      <a href="https://linkedin.com/in/hectorcabra">linkedin.com/in/hectorcabra</a>
+      <a href="Hector-Cabra-CV.pdf" download>Download CV</a>
+    </p>
 
-  <header class="titleblock">
-    <div class="tb-grid">
-      <h1 class="tb-name">Hector Cabra</h1>
+    <div class="mapwrap" id="map">
+      <svg viewBox="0 0 1000 330" role="img" aria-label="Route map of six projects on a software line and a networks line, meeting at one interchange">
+        <!-- routes -->
+        <path class="rt draw sw"
+              d="M 70 78 H 400 L 470 148 L 540 78 H 930"/>
+        <path class="rt draw net"
+              d="M 70 258 H 400 L 470 188 L 540 258 H 930"/>
+
+        <text class="linelabel sw" x="70" y="46">SOFTWARE</text>
+        <text class="linelabel net" x="70" y="232">NETWORKS</text>
+
+        <!-- software stations -->
+        <a class="stop" href="#netwatch">
+          <circle class="disc" data-l="sw" cx="160" cy="78" r="9"/>
+          <text class="lab" x="160" y="60" text-anchor="middle">netwatch</text>
+          <text class="met" x="160" y="112" text-anchor="middle">118 tests</text>
+        </a>
+        <a class="stop" href="#neuron">
+          <circle class="disc" data-l="sw" cx="300" cy="78" r="9"/>
+          <text class="lab" x="300" y="60" text-anchor="middle">NEURON</text>
+          <text class="met" x="300" y="112" text-anchor="middle">52 exercises</text>
+        </a>
+        <a class="stop" href="#pipeline">
+          <circle class="disc" data-l="sw" cx="700" cy="78" r="9"/>
+          <text class="lab" x="700" y="60" text-anchor="middle">GPU pipeline</text>
+          <text class="met" x="700" y="112" text-anchor="middle">crashes stopped</text>
+        </a>
+
+        <!-- networks stations -->
+        <a class="stop" href="#voice">
+          <circle class="disc" data-l="net" cx="160" cy="258" r="9"/>
+          <text class="lab" x="160" y="288" text-anchor="middle">Call quality</text>
+          <text class="met" x="160" y="310" text-anchor="middle">152.5 → 20.0 ms</text>
+        </a>
+        <a class="stop" href="#wan">
+          <circle class="disc" data-l="net" cx="300" cy="258" r="9"/>
+          <text class="lab" x="300" y="288" text-anchor="middle">Branch office</text>
+          <text class="met" x="300" y="310" text-anchor="middle">713 → 30.3 ms</text>
+        </a>
+        <a class="stop" href="#domain">
+          <circle class="disc" data-l="net" cx="700" cy="258" r="9"/>
+          <text class="lab" x="700" y="288" text-anchor="middle">Windows domain</text>
+          <text class="met" x="700" y="310" text-anchor="middle">built in code</text>
+        </a>
+
+        <!-- interchange -->
+        <a class="xchg stop" href="#interchange">
+          <rect x="437" y="140" width="66" height="56" rx="14"/>
+          <text x="470" y="164" text-anchor="middle">both</text>
+          <text x="470" y="182" text-anchor="middle">lines</text>
+        </a>
+
+        <!-- terminus -->
+        <a class="stop" href="#hire">
+          <line x1="930" y1="78" x2="930" y2="258" stroke="#14161A" stroke-width="4"/>
+          <rect x="884" y="150" width="92" height="34" rx="9" fill="#FAFAF7"/>
+          <text class="lab" x="930" y="172" text-anchor="middle">Hire me</text>
+          <circle class="disc" data-l="sw" cx="930" cy="78" r="9"/>
+          <circle class="disc" data-l="net" cx="930" cy="258" r="9"/>
+        </a>
+      </svg>
     </div>
-    <p class="tb-role">Network and infrastructure engineering</p>
-    <dl class="tb-meta">
-      <div><dt>Location</dt><dd>Sydney, Australia</dd></div>
-      <div><dt>Status</dt><dd><span class="avail">Available</span></dd></div>
-      <div><dt>Email</dt><dd><a href="mailto:hectorcabra95@gmail.com">hectorcabra95@gmail.com</a></dd></div>
-      <div><dt>Code</dt><dd><a href="https://github.com/Autokratz">github.com/Autokratz</a></dd></div>
-      <div><dt>Profile</dt><dd><a href="https://linkedin.com/in/hectorcabra">linkedin.com/in/hectorcabra</a></dd></div>
-    </dl>
-  </header>
+    <p class="mhint">Scroll the map sideways, or just keep reading.</p>
+  </div>
+</header>
 
-  <div class="lede">
-    <p>I fix networks, and I keep the <em>proof</em>.</p>
-    <p class="sub">Six pieces of work below. Each one is a thing that was broken, what I did about it, and the measurement that shows it worked. The raw capture files are committed next to the scripts that produced them, so every number here can be checked.</p>
+<main>
+
+<!-- ============ netwatch ============ -->
+<section class="station" id="netwatch"><div class="wrap">
+  <span class="tag sw"><i></i>Software</span>
+  <h2 class="head">Monitoring that cries wolf gets switched off. I wrote one that waits before it raises the alarm.</h2>
+  <p class="scene">netwatch, a published Python package</p>
+
+  <div class="nums">
+    <div class="n sw"><div class="lab">Tests</div><div class="now">118</div></div>
+    <div class="n sw"><div class="lab">Code covered</div><div class="now">96<u>%</u></div></div>
+    <div class="n plain"><div class="lab">Python versions in CI</div><div class="now">3</div></div>
+    <div class="n plain"><div class="lab">Dependencies</div><div class="now">0</div></div>
   </div>
 
-  <!-- ============ 01 ============ -->
-  <article class="report">
-    <h2 class="claim">Phone calls broke up whenever someone sent a big file. I fixed it without slowing the file transfer down.</h2>
-    <p class="where">Office network, 10 Mbps link to the server room</p>
+  <div class="note"><strong>A test found a real bug.</strong> The configuration ignored unknown settings without a word, so a typo dropped the limit and it never applied. The tool would run, look healthy, and never fire. An unknown setting now stops it at startup and lists the valid ones.</div>
 
-    <div class="pair">
-      <div class="q">
-        <div class="k">Call delay</div>
-        <div class="from"><s>152.5 ms</s></div>
-        <div class="to">20.0<u>ms</u></div>
-      </div>
-      <div class="q">
-        <div class="k">Choppiness</div>
-        <div class="from"><s>1.289 ms</s></div>
-        <div class="to">0.002<u>ms</u></div>
-      </div>
-      <div class="q">
-        <div class="k">Lost audio</div>
-        <div class="from"><s>0.072%</s></div>
-        <div class="to">0<u>%</u></div>
-      </div>
-      <div class="q plain">
-        <div class="k">Files slowed by</div>
-        <div class="to">0<u>%</u></div>
-      </div>
+  <details><summary><span class="pm"></span>How it works</summary><div class="inner">
+    <p>A problem must persist across three checks before the tool raises anything, and recovery across five before it stands down. Convincing it a fault has ended should be harder than convincing it one began. Alarms fire on changes only, so a long outage produces two lines instead of two hundred.</p>
+    <p>I designed for testing first. Probes never raise, so an unreachable host is just data. The alarm logic holds no clock and does no input or output, which is why twenty minutes of behaviour can be exercised in a millisecond.</p>
+    <p>It exits non-zero when something is wrong, so it works as a check after a change, not only as a dashboard.</p>
+  </div></details>
+
+  <div class="tools"><span>Python</span><span>pytest</span><span>mypy strict</span><span>ruff</span><span>GitHub Actions</span><span>Decision records</span></div>
+  <div class="acts"><a class="go-sw" href="https://github.com/Autokratz/netwatch">Read the code</a></div>
+</div></section>
+
+<!-- ============ voice ============ -->
+<section class="station" id="voice"><div class="wrap">
+  <span class="tag net"><i></i>Networks</span>
+  <h2 class="head">Phone calls broke up whenever someone sent a big file. I fixed it without slowing the file transfer down.</h2>
+  <p class="scene">Office network, 10 Mbps link to the server room</p>
+
+  <div class="nums">
+    <div class="n net"><div class="lab">Call delay</div><div class="was">152.5 ms</div><div class="now">20.0<u>ms</u></div></div>
+    <div class="n net"><div class="lab">Choppiness</div><div class="was">1.289 ms</div><div class="now">0.002<u>ms</u></div></div>
+    <div class="n net"><div class="lab">Lost audio</div><div class="was">0.072%</div><div class="now">0<u>%</u></div></div>
+    <div class="n plain"><div class="lab">Files slowed by</div><div class="now">0<u>%</u></div></div>
+  </div>
+
+  <figure>
+    <div class="keys">
+      <span><i class="k-a"></i>Before</span>
+      <span><i class="k-b"></i>After</span>
     </div>
+    <div id="plot1"></div>
+    <figcaption>Both traces sit near 99%, but not of the same number. Bonding the second uplink doubled capacity, so the after run carries about twice the traffic at the same fullness. I throttled nothing. The calls stopped queueing behind the file transfer.</figcaption>
+  </figure>
 
-    <figure>
-      <div class="key">
-        <span><i style="border-color:var(--red);border-top-style:dashed"></i>Before</span>
-        <span><i style="border-color:var(--blue)"></i>After</span>
-      </div>
-      <div class="plot" id="plot1"></div>
-      <figcaption><b>Fig. 1</b> Link usage stays at 99% in both states. Nothing was throttled — the calls simply stopped queueing behind the file transfer.</figcaption>
-    </figure>
-
-    <figure class="instr">
-      <canvas id="net" width="1000" height="250" aria-label="Voice and file traffic sharing one link, with a control to turn prioritisation on"></canvas>
-      <div class="instr-foot">
-        <span class="rd">Call delay</span>
-        <span class="rv" id="rtt">152.5</span><span class="un">ms</span>
-        <span class="rd" id="qtx">queue 0 of 40</span>
-        <button id="qos" type="button">Turn prioritisation on</button>
-      </div>
-      <figcaption><b>Fig. 2</b> The same fault, running live. Red is the phone call, blue is the file transfer. Press the button to see what the fix does.</figcaption>
-    </figure>
-
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>Both topologies were built in <strong>Linux network namespaces</strong> — real interfaces, real routing, real queueing — so the fault could be reproduced and measured rather than described.</p>
-        <p>The access switch held everything in one deep tail-drop queue, so voice waited behind bulk data in the same buffer. I replaced it with <strong>HTB class-based shaping</strong>, used <strong>u32 filters matching DSCP EF</strong> to steer RTP voice into a priority class, and bonded the two switch uplinks with <strong>802.3ad LACP</strong>.</p>
-        <p>The captured before and after, unedited:</p>
-        <p class="capture">before  rtt min/avg/max/mdev = 128.357/152.524/165.103/9.248 ms
+  <details><summary><span class="pm"></span>How it was done</summary><div class="inner">
+    <p>I built this in <strong>Linux network namespaces</strong>, with real interfaces, real routing and real queueing, so I could reproduce the fault and measure it.</p>
+    <p>The switch held everything in one deep queue, so voice waited behind bulk data in the same buffer. I replaced it with <strong>HTB class-based shaping</strong>, used <strong>u32 filters matching DSCP EF</strong> to steer voice into a priority class, and bonded the two uplinks with <strong>802.3ad LACP</strong>.</p>
+    <p class="grab">before  rtt min/avg/max/mdev = 128.357/152.524/165.103/9.248 ms
 after   rtt min/avg/max/mdev =  20.022/ 20.029/ 20.039/0.005 ms</p>
-        <p>Every mechanism maps one to one onto vendor configuration — HTB classes to a policy-map, u32 DSCP filters to <strong>match dscp ef</strong>, bonding to EtherChannel — so the work transfers to Cisco kit. The repository documents that mapping in full.</p>
-      </div>
-    </details>
+    <p>Every mechanism maps onto vendor configuration. The shaping classes become a policy-map, the filters become <strong>match dscp ef</strong>, the bond becomes EtherChannel. The work transfers to Cisco kit.</p>
+  </div></details>
 
-    <div class="spec"><span>tc / HTB</span><span>DSCP EF</span><span>802.3ad LACP</span><span>Linux netns</span><span>iperf3</span><span>Python</span></div>
-    <div class="go"><a class="key-action" href="https://github.com/Autokratz/network-qos-lab">Read the lab</a></div>
-  </article>
+  <div class="tools"><span>tc / HTB</span><span>DSCP EF</span><span>802.3ad LACP</span><span>Linux netns</span><span>iperf3</span><span>Python</span></div>
+  <div class="acts"><a class="go-net" href="https://github.com/Autokratz/network-qos-lab">Read the lab</a></div>
+</div></section>
 
-  <!-- ============ 02 ============ -->
-  <article class="report">
-    <h2 class="claim">A backup ran in the middle of the working day and took a branch office offline. I moved it out of business hours.</h2>
-    <p class="where">Branch office, 20 Mbps link over an encrypted tunnel</p>
+<!-- ============ NEURON ============ -->
+<section class="station" id="neuron"><div class="wrap">
+  <span class="tag sw"><i></i>Software</span>
+  <h2 class="head">A coding course that runs and marks real Python in your browser, with no server behind it.</h2>
+  <p class="scene">NEURON, a learning platform</p>
 
-    <div class="pair">
-      <div class="q">
-        <div class="k">Response time</div>
-        <div class="from"><s>713 ms</s></div>
-        <div class="to">30.3<u>ms</u></div>
-      </div>
-      <div class="q">
-        <div class="k">Worst case</div>
-        <div class="from"><s>1208 ms</s></div>
-        <div class="to">30.8<u>ms</u></div>
-      </div>
-      <div class="q">
-        <div class="k">Lost traffic</div>
-        <div class="from"><s>3.33%</s></div>
-        <div class="to">0<u>%</u></div>
-      </div>
-      <div class="q">
-        <div class="k">Link used</div>
-        <div class="from"><s>100.1%</s></div>
-        <div class="to">5.2<u>%</u></div>
-      </div>
+  <div class="nums">
+    <div class="n sw"><div class="lab">Graded exercises</div><div class="now">52</div></div>
+    <div class="n plain"><div class="lab">Servers needed</div><div class="now">0</div></div>
+    <div class="n plain"><div class="lab">Accounts needed</div><div class="now">0</div></div>
+  </div>
+
+  <details><summary><span class="pm"></span>How it works</summary><div class="inner">
+    <p>Courses that check answers by comparing text teach people to produce the expected words instead of working code. Marking real submissions normally needs a server, which means hosting, cost, and an account before a learner writes a line.</p>
+    <p>It runs Python in the browser through <strong>Pyodide</strong>, compiled to WebAssembly, and marks each submission against a hidden test suite. Course content is data, held separately from the engine, so adding material needs no code changes. Around 900 lines of plain JavaScript, no framework.</p>
+  </div></details>
+
+  <div class="tools"><span>JavaScript</span><span>Pyodide</span><span>WebAssembly</span><span>Python</span></div>
+  <div class="acts"><a class="go-sw" href="https://github.com/Autokratz/neuron">View the code</a></div>
+</div></section>
+
+<!-- ============ WAN ============ -->
+<section class="station" id="wan"><div class="wrap">
+  <span class="tag net"><i></i>Networks</span>
+  <h2 class="head">A backup ran in the middle of the working day and took a branch office offline. I moved it out of business hours.</h2>
+  <p class="scene">Branch office, 20 Mbps link over an encrypted tunnel</p>
+
+  <div class="nums">
+    <div class="n net"><div class="lab">Response time</div><div class="was">713 ms</div><div class="now">30.3<u>ms</u></div></div>
+    <div class="n net"><div class="lab">Worst case</div><div class="was">1208 ms</div><div class="now">30.8<u>ms</u></div></div>
+    <div class="n net"><div class="lab">Lost traffic</div><div class="was">3.33%</div><div class="now">0<u>%</u></div></div>
+    <div class="n net"><div class="lab">Link used</div><div class="was">100.1%</div><div class="now">5.2<u>%</u></div></div>
+  </div>
+
+  <figure>
+    <div class="keys">
+      <span><i class="k-a"></i>Backup unscheduled</span>
+      <span><i class="k-b"></i>Backup moved</span>
     </div>
+    <div id="plot2"></div>
+    <figcaption>Here I removed load instead of rescheduling who waits. The backup is legitimate traffic in the wrong window.</figcaption>
+  </figure>
 
-    <figure>
-      <div class="key">
-        <span><i style="border-color:var(--red);border-top-style:dashed"></i>Backup unscheduled</span>
-        <span><i style="border-color:var(--blue)"></i>Backup moved</span>
-      </div>
-      <div class="plot" id="plot2"></div>
-      <figcaption><b>Fig. 3</b> Here the goal was to remove load, not reschedule who waits. The backup is legitimate traffic in the wrong window.</figcaption>
-    </figure>
-
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>The branch reached head office through a <strong>WireGuard site-to-site tunnel</strong>, with <strong>nftables</strong> enforcing policy at the branch edge. I confirmed the saturation against interface counters, then applied a time-based bandwidth policy that caps backup traffic inside business hours and releases it outside them.</p>
-        <p>Backup throughput was deliberately shaped from 20.7 Mbps to 1.31 Mbps during the day. The backup still finishes; it just stops competing with the people trying to work.</p>
-        <p class="capture">before  rtt min/avg/max/mdev = 199.229/712.974/1208.492/360.286 ms, 3.33% loss
+  <details><summary><span class="pm"></span>How it was done</summary><div class="inner">
+    <p>The branch reached head office through a <strong>WireGuard site-to-site tunnel</strong>, with <strong>nftables</strong> enforcing policy at the branch edge. I confirmed the saturation against interface counters, then applied a time-based bandwidth policy that caps backup traffic inside business hours and releases it outside them.</p>
+    <p>I shaped backup throughput from 20.7 Mbps down to 1.31 Mbps during the day. The backup still finishes. It stops competing with the people trying to work.</p>
+    <p class="grab">before  rtt min/avg/max/mdev = 199.229/712.974/1208.492/360.286 ms, 3.33% loss
 after   rtt min/avg/max/mdev =  30.148/ 30.347/  30.767/  0.143 ms, 0% loss</p>
-      </div>
-    </details>
+  </div></details>
 
-    <div class="spec"><span>WireGuard</span><span>nftables</span><span>Time-based policy</span><span>tc / HTB</span><span>Linux netns</span></div>
-    <div class="go"><a class="key-action" href="https://github.com/Autokratz/network-qos-lab">Read the lab</a></div>
-  </article>
+  <div class="tools"><span>WireGuard</span><span>nftables</span><span>Time-based policy</span><span>tc / HTB</span><span>Linux netns</span></div>
+  <div class="acts"><a class="go-net" href="https://github.com/Autokratz/network-qos-lab">Read the lab</a></div>
+</div></section>
 
-  <!-- ============ 03 ============ -->
-  <article class="report">
-    <h2 class="claim">I built a company's Windows network entirely in code, then broke it three times on purpose to prove I could find the fault.</h2>
-    <p class="where">Windows Server domain, 32 staff across five departments</p>
-
-    <div class="pair">
-      <div class="q plain"><div class="k">Built by clicking</div><div class="to">0<u>steps</u></div></div>
-      <div class="q plain"><div class="k">Health checks</div><div class="to">25</div></div>
-      <div class="q plain"><div class="k">Faults injected</div><div class="to">3</div></div>
+<!-- ============ interchange ============ -->
+<section class="xsection" id="interchange"><div class="wrap">
+  <div class="xcard">
+    <h2>Where the two lines meet</h2>
+    <p>Most people ride one line or the other. A developer treats the network as somebody else's problem. A network engineer cannot ship software. I work on both, and the projects above are the same person doing each.</p>
+    <p>I joined Kangaroo IT in Sydney as a trainee developer, and they promoted me to project manager. I led ten developers building a customer records and ticketing platform in JavaScript, TypeScript and C#. Before that I spent four years as a data analyst for a live events business in Colombia, working in SQL and Power BI, and validating QR tickets on the ground at concerts and football matches. A scanning failure there has a crowd behind it.</p>
+    <p>I took the networking second, on purpose. I wanted to understand the thing my software runs on instead of filing a ticket about it.</p>
+    <div class="xbars">
+      <b style="background:var(--sw)">Software engineering degree</b>
+      <b style="background:var(--sw)">Led a team of ten</b>
+      <b style="background:var(--net)">Advanced Diploma, networking</b>
+      <b style="background:var(--net)">Measured lab work</b>
     </div>
+  </div>
+</div></section>
 
-    <table class="tbl">
-      <thead><tr><th>What the user reports</th><th>What the obvious check says</th></tr></thead>
-      <tbody>
-        <tr><td>“My settings disappeared”</td><td class="body">Policy is linked and enabled — and it is. The real cause is a permission change that stops the computer reading the policy at all.</td></tr>
-        <tr><td>“It locks me out when I'm not even here”</td><td class="body">Account is locked, and resetting the password changes nothing. An old saved password is retrying in the background from another machine.</td></tr>
-        <tr><td>“Nobody at the site can log in”</td><td class="body">The server is up and browsing the web fine. It is looking up names on the internet instead of its own directory — which is why browsing works.</td></tr>
-      </tbody>
-    </table>
+<!-- ============ domain ============ -->
+<section class="station" id="domain"><div class="wrap">
+  <span class="tag net"><i></i>Networks</span>
+  <h2 class="head">I built a company's Windows network entirely in code, then broke it three times on purpose to prove I could find the fault.</h2>
+  <p class="scene">Windows Server domain, 32 staff across five departments</p>
 
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>Forest, DNS, DHCP, the OU tree, the group model, policies and delegation are all created by idempotent <strong>PowerShell</strong>. There is no click-through in the build and no screenshot of a wizard in the repository — a domain that exists only as remembered clicks cannot be rebuilt under pressure.</p>
-        <p><strong>Test-DomainHealth.ps1</strong> answers 25 questions about the domain with pass, warn or fail and exits non-zero on any failure. It exists because the failures that cost the most time are the silent ones: a missing reverse zone, an unauthorised DHCP server, a share that never came back after a reboot. None of those announce themselves.</p>
-        <p>Helpdesk password-reset rights are delegated with <strong>dsacls</strong> as three explicit permissions on one subtree, rather than by adding people to Account Operators and handing them the whole directory.</p>
-        <p>The build scripts and the fault injection are written and checked by CI on every push. Measured evidence is committed after the first full run — no figures are published here before they exist.</p>
-      </div>
-    </details>
+  <div class="nums">
+    <div class="n plain"><div class="lab">Steps done by clicking</div><div class="now">0<u>steps</u></div></div>
+    <div class="n net"><div class="lab">Health checks</div><div class="now">25</div></div>
+    <div class="n net"><div class="lab">Faults injected</div><div class="now">3</div></div>
+  </div>
 
-    <div class="spec"><span>Windows Server 2022</span><span>Active Directory</span><span>PowerShell</span><span>Group Policy</span><span>DNS / DHCP</span><span>dsacls</span></div>
-    <div class="go"><a class="key-action" href="https://github.com/Autokratz/windows-ad-lab">See the lab</a></div>
-  </article>
+  <table class="grid">
+    <tr><td>“My settings disappeared”</td><td class="d">The policy is linked and switched on, and it is. The cause is a permission change that stops the computer reading the policy at all.</td></tr>
+    <tr><td>“It locks me out when I'm not even here”</td><td class="d">The account is locked and resetting the password changes nothing. An old saved password is retrying in the background from another machine.</td></tr>
+    <tr><td>“Nobody at the site can log in”</td><td class="d">The server is up and browsing the web fine. It is looking up names on the internet instead of its own directory, which is exactly why browsing still works.</td></tr>
+  </table>
 
-  <!-- ============ 04 ============ -->
-  <article class="report">
-    <h2 class="claim">Monitoring that cries wolf gets switched off. I wrote one that waits before it raises the alarm.</h2>
-    <p class="where">netwatch — a Python package, published</p>
+  <div class="note" style="margin-top:26px"><strong>Not finished yet.</strong> I have written the build scripts, the health check and the fault injection, and CI checks every script on each push. I have not run the full build against live virtual machines yet, so this page carries no measured results for it. None will appear until I have them.</div>
 
-    <div class="pair">
-      <div class="q plain"><div class="k">Tests</div><div class="to">118</div></div>
-      <div class="q plain"><div class="k">Code covered</div><div class="to">96<u>%</u></div></div>
-      <div class="q plain"><div class="k">Python versions in CI</div><div class="to">3</div></div>
-      <div class="q plain"><div class="k">Dependencies</div><div class="to">0</div></div>
-    </div>
+  <details><summary><span class="pm"></span>How it was done</summary><div class="inner">
+    <p><strong>PowerShell</strong> creates the forest, DNS, DHCP, the directory tree, the group model, policies and delegation, and every script is safe to re-run. There is no click-through in the build and no screenshot of a wizard in the repository. A network that exists only as remembered clicks cannot be rebuilt under pressure.</p>
+    <p>The health check answers 25 questions about the domain with pass, warn or fail and exits non-zero on any failure. The failures that cost the most time stay silent: a missing reverse zone, an unauthorised DHCP server, a share that never came back after a reboot. None of them announce themselves.</p>
+    <p>I gave the helpdesk three explicit permissions on one part of the directory. The usual shortcut adds people to a group that hands them everything.</p>
+  </div></details>
 
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>A problem must persist across three checks before the tool raises anything, and recovery across five before it stands down. The asymmetry is deliberate: it should be harder to convince the system a fault is over than that it started. Alarms fire on changes only, so a long outage produces two lines instead of two hundred.</p>
-        <p>Being testable drove the design rather than following it. Probes never raise — an unreachable host is just data. The alarm logic holds no clock and does no input or output, which is why twenty minutes of behaviour can be exercised in a millisecond.</p>
-        <p>It exits non-zero when something is wrong, so it works as a check after a change, not only as a dashboard.</p>
-        <p><strong>A test found a real bug:</strong> the configuration silently ignored unknown settings, so a typo would be dropped without a word and the limit never applied. The tool would run, look healthy, and never fire. Unknown settings are now an error at startup that lists the valid ones.</p>
-      </div>
-    </details>
+  <div class="tools"><span>Windows Server 2022</span><span>Active Directory</span><span>PowerShell</span><span>Group Policy</span><span>DNS / DHCP</span></div>
+  <div class="acts"><a class="go-net" href="https://github.com/Autokratz/windows-ad-lab">See the lab</a></div>
+</div></section>
 
-    <div class="spec"><span>Python</span><span>pytest</span><span>mypy strict</span><span>ruff</span><span>GitHub Actions</span><span>Decision records</span></div>
-    <div class="go"><a class="key-action" href="https://github.com/Autokratz/netwatch">Read the code</a></div>
-  </article>
+<!-- ============ pipeline ============ -->
+<section class="station" id="pipeline"><div class="wrap">
+  <span class="tag sw"><i></i>Software</span>
+  <h2 class="head">A rendering pipeline kept taking the whole machine down. I made it check itself before it runs.</h2>
+  <p class="scene">Batch image pipeline, one graphics card, 12 GB of memory</p>
 
-  <!-- ============ 05 ============ -->
-  <article class="report">
-    <h2 class="claim">A coding course that runs and marks real Python in your browser, with no server behind it.</h2>
-    <p class="where">NEURON — a learning platform</p>
+  <details><summary><span class="pm"></span>How it works</summary><div class="inner">
+    <p>Two jobs overlapping meant an out-of-memory failure that froze the machine. Bad output from an early stage wasted time on every stage after it.</p>
+    <p>A preflight check validates the environment, confirms the models are present and checks free memory before I submit anything. Jobs run one at a time, so stages never overlap. A quality gate scores each stage's output and rejects failures before they reach the next one.</p>
+    <p>I built one of the quality measures, tested it against known inputs, found it could not separate the cases it was meant to catch, and <strong>deleted</strong> it. Shipping it would have given me a check that fires on everything. Knowing what to leave out is the part of this I am most confident about.</p>
+  </div></details>
 
-    <div class="pair">
-      <div class="q plain"><div class="k">Graded exercises</div><div class="to">52</div></div>
-      <div class="q plain"><div class="k">Servers needed</div><div class="to">0</div></div>
-      <div class="q plain"><div class="k">Accounts needed</div><div class="to">0</div></div>
-    </div>
+  <div class="tools"><span>Python</span><span>Bash</span><span>Memory budgeting</span><span>Job scheduling</span><span>Quality gates</span></div>
+</div></section>
 
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>Courses that check answers by comparing text teach people to produce the expected words, not working code. Marking properly normally needs a server to run submissions, which means hosting, cost, and an account before a learner writes a line.</p>
-        <p>This runs Python in the browser through <strong>Pyodide</strong>, compiled to WebAssembly, and marks each submission against a hidden test suite. Course content is data, separate from the engine, so adding material needs no code changes. Around 900 lines of plain JavaScript, no framework.</p>
-      </div>
-    </details>
+<!-- ============ background ============ -->
+<section class="station" id="background"><div class="wrap">
+  <h2 class="head">Background</h2>
+  <table class="grid">
+    <tr><td>Advanced Diploma of Networking Engineering</td><td class="d">Abbey College Australia, Sydney. Finishing October 2026</td></tr>
+    <tr><td>Software developer, then project manager</td><td class="d">Kangaroo IT, Sydney, 2023 to 2024. Promoted during the program, led ten developers</td></tr>
+    <tr><td>Diploma of Information Technology</td><td class="d">Wells International College, Australia, 2024</td></tr>
+    <tr><td>Bachelor of Software Engineering</td><td class="d">Politécnico Grancolombiano, Colombia, 2024. Four years</td></tr>
+    <tr><td>Data analyst</td><td class="d">Zcial, Colombia, 2016 to 2020. Reporting and live event ticketing</td></tr>
+    <tr><td>Studying now</td><td class="d">Cisco CCNA and ITIL 4 Foundation</td></tr>
+  </table>
+</div></section>
 
-    <div class="spec"><span>JavaScript</span><span>Pyodide</span><span>WebAssembly</span><span>Python</span></div>
-    <div class="go"><a class="key-action" href="https://github.com/Autokratz/neuron">View the code</a></div>
-  </article>
+<!-- ============ hire ============ -->
+<section class="station" id="hire"><div class="wrap">
+  <h2 class="head">Open to software and network roles in Sydney.</h2>
+  <p class="sub" style="margin-bottom:26px">On-site, hybrid or remote. Email reaches me fastest and I answer the same day.</p>
+  <div class="acts">
+    <a class="go-net" href="mailto:hectorcabra95@gmail.com">hectorcabra95@gmail.com</a>
+    <a href="Hector-Cabra-CV.pdf" download>Download CV</a>
+    <a href="https://github.com/Autokratz">GitHub</a>
+    <a href="https://linkedin.com/in/hectorcabra">LinkedIn</a>
+  </div>
+</div></section>
 
-  <!-- ============ 06 ============ -->
-  <article class="report">
-    <h2 class="claim">A rendering pipeline kept taking the whole machine down. I made it check itself before it runs.</h2>
-    <p class="where">Batch image pipeline, one graphics card, 12 GB of memory</p>
+</main>
 
-    <details>
-      <summary>How it was done</summary>
-      <div class="body">
-        <p>Two jobs overlapping meant an out-of-memory failure that froze the machine, and bad output from an early stage wasted time on every stage after it.</p>
-        <p>A preflight check validates the environment, confirms the models are present and checks free memory before anything is submitted, and jobs are scheduled one at a time so stages never overlap. A quality gate scores each stage's output and rejects failures before they reach the next one.</p>
-        <p>One of the quality measures was built, tested against known inputs, found unable to separate the cases it was meant to catch, and <strong>removed</strong> rather than shipped as a check that fires on everything. Knowing when not to ship something is the part of this work I am most confident about.</p>
-      </div>
-    </details>
-
-    <div class="spec"><span>Python</span><span>Bash</span><span>Memory budgeting</span><span>Job scheduling</span><span>Automated quality gates</span></div>
-  </article>
-
-  <!-- ============ capability ============ -->
-  <section class="block">
-    <h2>What I work with</h2>
-    <table class="tbl">
-      <tr><td>Networks</td><td class="body">Traffic shaping and prioritisation, link aggregation, site-to-site VPN, firewall policy, routing and subnetting, TCP/IP, DNS, DHCP, performance testing and fault diagnosis</td></tr>
-      <tr><td>Systems</td><td class="body">Linux administration and boot-level troubleshooting, Windows Server, Active Directory, Group Policy, Windows 10 and 11</td></tr>
-      <tr><td>Programming</td><td class="body">Python, Bash, PowerShell, JavaScript, TypeScript, C#, SQL</td></tr>
-      <tr><td>How I work</td><td class="body">Automated tests, type checking, continuous integration, written decision records, before-and-after measurement</td></tr>
-      <tr><td>Studying</td><td class="body">Cisco CCNA and ITIL 4 Foundation</td></tr>
-    </table>
-  </section>
-
-  <section class="block">
-    <h2>Background</h2>
-    <table class="tbl">
-      <tr><td>Advanced Diploma of Networking Engineering</td><td class="body">Abbey College Australia, Sydney — finishing October 2026</td></tr>
-      <tr><td>Software developer, then project manager</td><td class="body">Kangaroo IT, Sydney, 2023–2024 — promoted during the program, led a team of ten building a customer support and records platform</td></tr>
-      <tr><td>Diploma of Information Technology</td><td class="body">Wells International College, Australia, 2024</td></tr>
-      <tr><td>Bachelor of Software Engineering</td><td class="body">Politécnico Grancolombiano, Colombia, 2024</td></tr>
-      <tr><td>Data analyst</td><td class="body">Zcial, Colombia, 2016–2020 — reporting for a live events business, and ticket scanning on the ground at concerts and football matches</td></tr>
-    </table>
-    <div class="go">
-      <a class="key-action" href="mailto:hectorcabra95@gmail.com">Email me</a>
-      <a href="Hector-Cabra-CV.pdf" download>Download CV</a>
-      <a href="https://github.com/Autokratz">GitHub</a>
-      <a href="https://linkedin.com/in/hectorcabra">LinkedIn</a>
-    </div>
-  </section>
-
-  <footer>
-    <p>Every figure on this page was measured, not estimated. The raw capture files, the per-second counter samples and the scripts that produced them are committed in the lab repository. Figure 2 is a live illustration of the mechanism; the numbers beside it are the measurements.</p>
-  </footer>
-
-</div>
+<footer><div class="wrap">
+  <p>I measured every figure here. The raw capture files, the per-second counter samples and the scripts that produced them all sit in the lab repository.</p>
+</div></footer>
 
 <script>
 (function(){
   "use strict";
-  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var OBS = 'IntersectionObserver' in window;
+  const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const OBS = 'IntersectionObserver' in window;
 
-  /* ---------------- plots ---------------- */
-  var DATA = {
-    plot1:{cap:105, xmax:69,
+  /* ---- route map: measure each route, then let CSS draw it ----
+     Navigation is native SVG <a href>. With no --len the dash array is 0,
+     so a script failure leaves solid, fully drawn routes. */
+  const map = document.getElementById('map');
+  if (map){
+    map.querySelectorAll('.rt.draw').forEach(route => {
+      let len;
+      try { len = Math.ceil(route.getTotalLength()); } catch { len = 1600; }
+      route.style.setProperty('--len', len);
+    });
+    map.classList.add('play');
+  }
+
+  /* ---- measured plots ----
+     Marks carry classes; the palette lives in :root. Series length defines
+     the time axis, so the two can never disagree. */
+  const SETS = {
+    plot1:{cap:105,
       a:[0,0,0,0,0,0,0,0,90.4,98.8,98.6,98.9,99,98.9,99,98.9,99,99.1,99,98.9,98.8,99.1,99,99,99.1,98.8,99.2,98.9,98.9,99.1,98.8,99.1,99,99,98.9,99,98.9,99,98.9,98.9,99.1,98.8,98.9,98.9,98.9,99.1,99.1,99,98.9,99,98.8,98.7,98.7,98.7,98.8,98.7,98.7,98.9,98.7,98.7,5.9,0,0,0,0,0,0,0,0,0],
       b:[0,0,0,0,0,85.8,98.5,98.6,98.6,99.2,98.9,98.7,98.8,98.6,98.8,98.8,98.7,98.9,98.8,98.9,98.6,98.7,98.7,98.7,98.7,98.9,98.8,98.7,98.7,98.7,98.8,98.7,98.7,98.9,98.8,98.9,98.8,98.7,98.8,98.7,98.7,98.8,98.9,98.8,98.8,98.6,98.5,98.7,98.7,98.5,30.2,0,0,0,0]},
-    plot2:{cap:105, xmax:54,
+    plot2:{cap:105,
       a:[0,0,0,0,0,76.3,100.6,100.7,100.6,100.6,100.7,100.6,100.6,100.6,100.7,100.6,100.6,100.6,100.6,100.7,100.6,100.6,100.6,100.6,100.7,100.6,100.7,100.6,100.6,100.6,100.7,100.7,100.6,100.7,100.6,100.6,100.7,100.6,100.6,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.7,100.6,100.6,95.9,0,0,0],
       b:[0,0,0,0,4.2,5.3,5.4,5.3,5.4,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.4,5.3,5.3,5.3,5.4,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,5.3,4.8,0]}
   };
-  var NS='http://www.w3.org/2000/svg';
-  function E(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  const NS = 'http://www.w3.org/2000/svg';
+  const E = (tag, attrs) => {
+    const el = document.createElementNS(NS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  };
 
-  Object.keys(DATA).forEach(function(id){
-    var host=document.getElementById(id); if(!host) return;
-    var d=DATA[id], W=900,H=250, L=52,R=18,T=18,B=34;
-    var iw=W-L-R, ih=H-T-B, n=Math.max(d.a.length,d.b.length);
-    var svg=E('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Link usage over time, before and after the fix'});
+  for (const [id, d] of Object.entries(SETS)){
+    const host = document.getElementById(id);
+    if (!host) continue;
 
-    // axes only - the graph paper behind supplies the grid
-    svg.appendChild(E('line',{x1:L,y1:T,x2:L,y2:T+ih,stroke:'#14212B','stroke-width':1.4}));
-    svg.appendChild(E('line',{x1:L,y1:T+ih,x2:W-R,y2:T+ih,stroke:'#14212B','stroke-width':1.4}));
+    const W = 900, H = 260, L = 54, R = 14, T = 14, B = 36;
+    const iw = W - L - R, ih = H - T - B;
+    const n = Math.max(d.a.length, d.b.length);
+    const xmax = n - 1;
+    const svg = E('svg', {viewBox:`0 0 ${W} ${H}`, role:'img',
+      'aria-label':'Link usage over time, before and after the change'});
 
-    [0,50,100].forEach(function(v){
-      var y=T+ih-(v/d.cap)*ih;
-      svg.appendChild(E('line',{x1:L-5,y1:y,x2:L,y2:y,stroke:'#14212B','stroke-width':1.4}));
-      var t=E('text',{x:L-10,y:y+4,'text-anchor':'end','font-family':'Archivo, sans-serif','font-size':12,fill:'#48585F'});
-      t.textContent=v+'%'; svg.appendChild(t);
-    });
-    [0,Math.round(d.xmax/2),d.xmax].forEach(function(v){
-      var x=L+(v/d.xmax)*iw;
-      svg.appendChild(E('line',{x1:x,y1:T+ih,x2:x,y2:T+ih+5,stroke:'#14212B','stroke-width':1.4}));
-      var t=E('text',{x:x,y:H-12,'text-anchor':v===0?'start':(v===d.xmax?'end':'middle'),'font-family':'Archivo, sans-serif','font-size':12,fill:'#48585F'});
-      t.textContent=v+' s'; svg.appendChild(t);
-    });
+    for (const v of [0,25,50,75,100]){
+      const y = T + ih - (v / d.cap) * ih;
+      svg.appendChild(E('line', {x1:L, y1:y, x2:W-R, y2:y,
+        class: v === 0 ? 'gridline base' : 'gridline'}));
+      const label = E('text', {x:L-10, y:y+5, 'text-anchor':'end', class:'ax'});
+      label.textContent = `${v}%`;
+      svg.appendChild(label);
+    }
+    for (const v of [0, Math.round(xmax/2), xmax]){
+      const x = L + (v / xmax) * iw;
+      const anchor = v === 0 ? 'start' : (v === xmax ? 'end' : 'middle');
+      const label = E('text', {x, y:H-10, 'text-anchor':anchor, class:'ax'});
+      label.textContent = `${v} s`;
+      svg.appendChild(label);
+    }
 
-    var uid='w-'+id;
-    var defs=E('defs',{});
-    var cp=E('clipPath',{id:uid});
-    var wipe=E('rect',{x:L,y:0,width:iw,height:H});
-    wipe.setAttribute('class','wipe');
-    wipe.style.transformOrigin=L+'px 0px';
-    cp.appendChild(wipe); defs.appendChild(cp); svg.appendChild(defs);
-    var pen=E('g',{'clip-path':'url(#'+uid+')'});
+    const uid = `clip-${id}`;
+    const defs = E('defs', {}), clip = E('clipPath', {id:uid});
+    const wipe = E('rect', {x:L, y:0, width:iw, height:H, class:'wipe'});
+    wipe.style.transformOrigin = `${L}px 0px`;
+    clip.appendChild(wipe); defs.appendChild(clip); svg.appendChild(defs);
+    const pen = E('g', {'clip-path':`url(#${uid})`});
     svg.appendChild(pen);
 
-    function path(series,colour,dash,late){
-      var s='';
-      for(var i=0;i<series.length;i++){
-        var x=L+(i/(n-1))*iw, y=T+ih-(Math.min(series[i],d.cap)/d.cap)*ih;
-        s+=(i===0?'M':'L')+x.toFixed(1)+' '+y.toFixed(1);
-      }
-      var p=E('path',{d:s,fill:'none',stroke:colour,'stroke-width':2.4,'stroke-linejoin':'round','stroke-linecap':'round'});
-      if(dash) p.setAttribute('stroke-dasharray','7 4');
-      pen.appendChild(p);
-      return p;
-    }
-    path(d.a,'#C3392B',true,false);
-    path(d.b,'#10467F',false,true);
+    const plot = (series, cls) => {
+      let path = '';
+      series.forEach((value, i) => {
+        const x = L + (i / xmax) * iw;
+        const y = T + ih - (Math.min(value, d.cap) / d.cap) * ih;
+        path += `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+      });
+      pen.appendChild(E('path', {d:path, class:cls}));
+    };
+    plot(d.a, 'ln-a');
+    plot(d.b, 'ln-b');
     host.appendChild(svg);
-
-    // Arm the wipe only for a plot that is genuinely below the fold.
-    var box=host.getBoundingClientRect();
-    if(!REDUCED && OBS && box.top > (window.innerHeight||800)) host.parentNode.classList.add('armed');
-  });
-
-  function drawPlot(fig){ fig.classList.remove('armed'); }
-  var figs=document.querySelectorAll('figure');
-  if(OBS && !REDUCED){
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ drawPlot(e.target); io.unobserve(e.target); } });
-    },{threshold:.2});
-    Array.prototype.forEach.call(figs,function(f){ io.observe(f); });
   }
-  setTimeout(function(){ Array.prototype.forEach.call(figs,drawPlot); },3500);
 
-  /* ---------------- live instrument ---------------- */
-  (function(){
-    var cv=document.getElementById('net'); if(!cv||!cv.getContext) return;
-    var ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
-    var INK='#14212B', SOFT='#77848B', RED='#C3392B', BLUE='#10467F', PANEL='#F5F7F8';
-
-    var PHONE={x:96,y:70,l:'phone'}, PC={x:96,y:182,l:'workstation'},
-        SW={x:350,y:126,l:'switch'}, CORE={x:760,y:126,l:'core'}, SRV={x:918,y:126,l:'server'};
-
-    var QMAX=40, DRAIN=46, BASE=20, SLOT=3.30, VOICE=340, BULK=34, WIRE=760, OUTT=900;
-    var on=false, q=[], wire=[], out=[], rtt=BASE, lost=0;
-    var tD=0,tV=0,tB=0,prev=0,flash=0;
-
-    function emit(k){ wire.push({k:k,f:k==='v'?PHONE:PC,t:0}); }
-    function enq(k){
-      var ahead;
-      if(k==='v'&&on){ var i=0; while(i<q.length&&q[i].k==='v')i++; ahead=i; q.splice(i,0,{k:k}); }
-      else{
-        if(q.length>=QMAX){ flash=1; if(k==='v'){ lost++; rtt+=(BASE+QMAX*SLOT-rtt)*0.3; } return; }
-        ahead=q.length; q.push({k:k});
+  /* ---- reveal: one decision, made once ----
+     Figures are visible by default. Arm the wipe only for a figure below the
+     fold, and only when an observer exists to release it. */
+  const animate = !REDUCED && OBS;
+  if (animate){
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries){
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.remove('armed');
+        io.unobserve(entry.target);
       }
-      if(k==='v') rtt+=(BASE+ahead*SLOT-rtt)*0.3;
-    }
-    function box(nd,hot){
-      ctx.fillStyle=PANEL; ctx.strokeStyle=hot?BLUE:INK; ctx.lineWidth=1.4;
-      ctx.fillRect(nd.x-33,nd.y-15,66,30); ctx.strokeRect(nd.x-33,nd.y-15,66,30);
-      ctx.fillStyle=SOFT; ctx.font='500 11px Archivo, sans-serif'; ctx.textAlign='center';
-      ctx.fillText(nd.l,nd.x,nd.y+28);
-    }
-    function wireTo(a,b,w,c){ ctx.strokeStyle=c||INK; ctx.lineWidth=w||1.2; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+    }, {threshold:0.2});
 
-    function draw(dt){
-      ctx.clearRect(0,0,W,H);
-      wireTo(PHONE,SW); wireTo(PC,SW); wireTo(SW,CORE,3,on?BLUE:RED); wireTo(CORE,SRV);
-
-      ctx.fillStyle=SOFT; ctx.font='500 11px Archivo, sans-serif'; ctx.textAlign='center';
-      ctx.fillText(on?'prioritised':'one shared queue',(SW.x+CORE.x)/2,SW.y-26);
-
-      var qx=SW.x+44, qy=SW.y+34;
-      for(var i=0;i<QMAX;i++){
-        var p=q[i];
-        ctx.fillStyle=p?(p.k==='v'?RED:BLUE):'rgba(20,33,43,.07)';
-        ctx.fillRect(qx+i*9,qy,7,12);
-      }
-      ctx.fillStyle=SOFT; ctx.textAlign='left'; ctx.fillText('waiting',qx,qy+26);
-      if(flash>0){ ctx.fillStyle='rgba(195,57,43,'+flash+')'; ctx.fillText('dropped',qx+300,qy+26); flash-=0.02; }
-
-      box(PHONE); box(PC); box(SW); box(CORE,on); box(SRV);
-
-      for(var w=wire.length-1;w>=0;w--){
-        var k=wire[w]; k.t+=dt/WIRE;
-        var x=k.f.x+(SW.x-k.f.x)*k.t, y=k.f.y+(SW.y-k.f.y)*k.t;
-        ctx.fillStyle=k.k==='v'?RED:BLUE; ctx.beginPath(); ctx.arc(x,y,k.k==='v'?4:3,0,6.2832); ctx.fill();
-        if(k.t>=1){ enq(k.k); wire.splice(w,1); }
-      }
-      for(var o=out.length-1;o>=0;o--){
-        var op=out[o]; op.t+=dt/OUTT;
-        var ox=SW.x+(SRV.x-SW.x)*op.t;
-        ctx.fillStyle=op.k==='v'?RED:BLUE; ctx.beginPath(); ctx.arc(ox,SW.y,op.k==='v'?4:3,0,6.2832); ctx.fill();
-        if(op.t>=1) out.splice(o,1);
+    for (const fig of document.querySelectorAll('figure')){
+      if (fig.getBoundingClientRect().top > (window.innerHeight || 800)){
+        fig.classList.add('armed');
+        io.observe(fig);
       }
     }
-    function chase(last,per,fn,ts){ if(ts-last>2000) return ts; var g=0; while(ts-last>=per&&g++<40){ fn(); last+=per; } return last; }
-    var raf=null, live=false;
-    function step(ts){
-      if(!tD){ tD=tV=tB=prev=ts; }
-      var dt=Math.min(ts-prev,100); prev=ts;
-      tV=chase(tV,VOICE,function(){emit('v');},ts);
-      tB=chase(tB,BULK,function(){emit('b');},ts);
-      tD=chase(tD,DRAIN,function(){ var p=q.shift(); if(p) out.push({k:p.k,t:0}); },ts);
-      draw(dt);
-      var r=document.getElementById('rtt');
-      if(r){ r.textContent=rtt.toFixed(1); if(rtt<60) r.classList.add('ok'); else r.classList.remove('ok'); }
-      var qt=document.getElementById('qtx');
-      if(qt) qt.textContent='queue '+q.length+' of '+QMAX+(lost?', '+lost+' calls dropped':'');
-      raf=requestAnimationFrame(step);
-    }
-    function go(){ if(!live){ live=true; tD=0; raf=requestAnimationFrame(step); } }
-    function halt(){ if(live){ live=false; cancelAnimationFrame(raf); } }
-
-    var btn=document.getElementById('qos');
-    if(btn) btn.addEventListener('click',function(){
-      on=!on;
-      btn.textContent=on?'Turn prioritisation off':'Turn prioritisation on';
-      if(on){ q=q.filter(function(p){return p.k!=='v';}); lost=0; }
-    });
-
-    if(REDUCED){
-      for(var z=0;z<34;z++) q.push({k:z%9===0?'v':'b'});
-      draw(16); var r0=document.getElementById('rtt'); if(r0) r0.textContent='152.5';
-      return;
-    }
-    if(OBS){ new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting?go():halt(); }); },{threshold:.05}).observe(cv); }
-    else go();
-  })();
+  }
 })();
 </script>
 </body>
